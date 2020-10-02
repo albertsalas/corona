@@ -2,26 +2,28 @@ var express = require('express');
 var mysql = require('mysql');
 var router = express.Router();
 var connection = require('../public/javascripts/connection');
-let products = [];
 
-function storeResults(results) {
-    products = results;
-}
-
-// TODO: change to async call
-router.get('/', function (req, res, next) {
-    connection.query(
-        `SELECT * FROM Product`,
-        (error, results, fields) => {
-            if (error) {
-                console.log(error);
-            } else {
-                storeResults(results);
-            }
-        }
-    ); // query
+// we use an async function so that the page doesn't render before the results are returned from the database
+router.get('/', async function (req, res, next) {
+    let products = await getAllProducts();
     res.render('testing', {data: products});
 });
+
+// gets all the products from the database
+function getAllProducts() {
+    return new Promise(function (resolve, reject) {
+        connection.query(
+            `SELECT * FROM Product`,
+            (error, results, fields) => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    resolve(results);
+                }
+            }
+        ); // query
+    });
+}
 
 // Add a product to the database
 router.post('/', function (req, res, next) {
