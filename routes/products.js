@@ -8,6 +8,7 @@ function storeResults(results) {
     products = results;
 }
 
+// TODO: change to async call
 router.get('/', function (req, res, next) {
     connection.query(
         `SELECT * FROM Product`,
