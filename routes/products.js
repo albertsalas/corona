@@ -19,7 +19,7 @@ router.get('/', function (req, res, next) {
             }
         }
     ); // query
-    res.render('testing', {data: products});
+    res.render('product', {data: products});
 });
 
 // Add a product to the database

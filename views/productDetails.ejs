@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang = "en">
 <head>
-    <title>Product Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
@@ -9,16 +11,15 @@
 <body>
 
     <h1>Corona</h1>
-    <h1>Product Page</h1>
+    <h1>Product Details Page</h1>
 
     <!--Navigation bar (log in, sign up, log out, search)-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-        <a class="nav-link" href="/shoppingCart">Shopping Cart</a>
+        <a class="nav-link" href="#">Shopping Cart</a>
         <a class="nav-link" href="#">Logout</a>
 <!-- temp -->
         <a class="nav-link" href="/products">products</a>
-        <a class="nav-link" href="/productDetails">Product Details</a>
 <!-- temp end -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <form class="form-inline my-2 my-lg-0">
@@ -27,31 +28,6 @@
             </form>
         </div>
     </nav>
-
-    <!--Area for scrolling over product images/prices-->
-    <div class = "row">
-        <% for (var i =1; i <=10;  i++ ) { %>
-        <div class="col-sm-3">.col-sm-3</div>
-        <%#  will output the numbers 1-10 %>
-        <% } %>
-    </div>
-
-    
-
-    <script>
-
-        function PopulatePage() {
-            const request = new XMLHttpRequest();
-
-            //I think it should be DB file in the second argument
-            /*The optional third parameter sets whether the request is asynchronous.
-            If true(the default ), JavaScript execution will continue and the user can
-            interact with the page while the server response has yet to arrive.
-            */
-            request.open("get", "");
-        }
-
-    </script>
 
 </body>
 </html>

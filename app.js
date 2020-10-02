@@ -10,6 +10,7 @@ dotenv.config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
+var productDetailsRouter = require('./routes/productDetails');
 var shoppingCartRouter = require('./routes/shoppingcart');
 var app = express();
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
+app.use('/productDetails', productDetailsRouter);
 app.use('/shoppingcart', shoppingCartRouter);
 
 // catch 404 and forward to error handler
