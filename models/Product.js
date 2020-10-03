@@ -1,6 +1,5 @@
 const connection = require('../public/javascripts/connection');
 
-// TODO: write documentation
 /**
  * Represents a product
  * @param product - new product object
@@ -27,7 +26,7 @@ Product.create = (newProduct, result) => {
         }
         console.log("created product: ", {name: res.name, ...newProduct});
         result(null, {name: res.name, ...newProduct})
-    }); // query
+    });
 };
 
 /**
@@ -62,12 +61,13 @@ Product.findAll = result => {
 
 /**
  * Updates a product's information
+ * @param name - the product name
  * @param product - the product object
  * @param result - the query result
  */
-Product.update = (product, result) => {
-    connection.query("UPDATE Product SET name = ? description = ?, price = ?, quantity = ?",
-        [product.name, product.description, product.price, product.quantity], (err) => {
+Product.update = (name, product, result) => {
+    connection.query("UPDATE Product SET name = ?, description = ?, price = ?, quantity = ? WHERE name = ?",
+        [product.name, product.description, product.price, product.quantity, name], (err) => {
             if (err) {
                 result(null, err);
                 return;

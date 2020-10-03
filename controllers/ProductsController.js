@@ -6,7 +6,6 @@ const Product = require("../models/Product.js");
  * @param res - response
  */
 exports.create = (req, res) => {
-    console.log(req.body);
     if (!req.body) {
         res.status(400).send({
             message: "Content cannot be empty!"
@@ -41,6 +40,7 @@ exports.find = (req, res) => {
         if (err) {
             throw err;
         } else {
+            console.log(data);
             res.send(data);
         }
     });
@@ -56,6 +56,7 @@ exports.findAll = (req, res) => {
         if (err) {
             res.status(500).send({message: err.message || "An error occurred when retrieving products."});
         } else {
+            console.log(data);
             res.render('testing', {data: data});
         }
     });
@@ -72,10 +73,15 @@ exports.update = (req, res) => {
             message: "Content cannot be empty!"
         });
     }
-    Product.update(new Product(req.body), (err, data) => {
+    Product.update(req.params.name, new Product(req.body), (err, data) => {
         if (err) {
-            throw err;
+            if (err.kind === "not_found") {
+                res.status(404).send({message: `No product found with name ${req.params.name}.`});
+            } else {
+                res.status(500).send({message: `Could not update product with name ${req.params.name}.`});
+            }
         } else {
+            console.log(data);
             res.send(data);
         }
     });

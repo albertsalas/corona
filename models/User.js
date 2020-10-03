@@ -47,12 +47,13 @@ User.find = (username, result) => {
 
 /**
  * Updates a user's profile
+ * @param username - the user's username
  * @param user - the user object
  * @param result - the query result
  */
-User.update = (user, result) => {
-    connection.query("UPDATE User SET username = ?, password = ?, firstName = ?, lastName = ?",
-        [user.username, user.password, user.firstName, user.lastName], (err) => {
+User.update = (username, user, result) => {
+    connection.query("UPDATE User SET username = ?, password = ?, firstName = ?, lastName = ? WHERE username = ?",
+        [user.username, user.password, user.firstName, user.lastName, username], (err) => {
             if (err) {
                 result(null, err);
                 return;
