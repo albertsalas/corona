@@ -1,8 +1,11 @@
-express = require('express');
 const connection = require('../public/javascripts/connection');
 
 // TODO: write documentation
-
+/**
+ * Represents a product
+ * @param product - new product object
+ * @constructor
+ */
 const Product = function (product) {
     this.name = product.name;
     this.description = product.description;
@@ -10,6 +13,11 @@ const Product = function (product) {
     this.quantity = product.quantity;
 };
 
+/**
+ * Query to insert new product into database
+ * @param newProduct - the product object
+ * @param result - the result of the query
+ */
 Product.create = (newProduct, result) => {
     connection.query("INSERT INTO Product SET ?", newProduct, (err, res) => {
         if (err) {
@@ -22,6 +30,11 @@ Product.create = (newProduct, result) => {
     }); // query
 };
 
+/**
+ * Queries the database to find a product using a name
+ * @param name - the product name
+ * @param result - the query result
+ */
 Product.find = (name, result) => {
     connection.query("SELECT * FROM Product WHERE name = ?", name, (err, res) => {
         if (err) {
@@ -30,11 +43,12 @@ Product.find = (name, result) => {
             return;
         }
         result(null, res);
-    })
+    });
 };
 
 /**
- * Evaluates query and resolves promise if there are no errors with the query.
+ * Finds all products in the database
+ * @param result - the query results
  */
 Product.findAll = result => {
     connection.query(`SELECT * FROM Product`, (error, res) => {
@@ -43,22 +57,31 @@ Product.findAll = result => {
         } else {
             result(null, res);
         }
-    }); // query
+    });
 };
 
+/**
+ * Updates a product's information
+ * @param product - the product object
+ * @param result - the query result
+ */
 Product.update = (product, result) => {
     connection.query("UPDATE Product SET name = ? description = ?, price = ?, quantity = ?",
-        [product.name, product.description, product.price, product.quantity],
-        (err, res) => {
+        [product.name, product.description, product.price, product.quantity], (err) => {
             if (err) {
                 result(null, err);
                 return;
             }
             result(null, {name: product.name, ...product});
         }
-    )
+    );
 };
 
+/**
+ * Delete a product using a name
+ * @param name - the product name
+ * @param result - the query result
+ */
 Product.delete = (name, result) => {
     connection.query(
         `DELETE FROM Product WHERE name = ("${name}");`, (error, res) => {
@@ -75,7 +98,7 @@ Product.delete = (name, result) => {
             console.log("deleted product with name: ", name);
             result(null, res);
         }
-    ); // query
+    );
 };
 
 module.exports = Product;

@@ -1,6 +1,10 @@
 const Product = require("../models/Product.js");
 
-// Create and Save a new Product
+/**
+ * Create and Save a new Product
+ * @param req - request
+ * @param res - response
+ */
 exports.create = (req, res) => {
     console.log(req.body);
     if (!req.body) {
@@ -27,7 +31,11 @@ exports.create = (req, res) => {
     });
 };
 
-// Find a single product
+/**
+ * Finds a single product
+ * @param req - request
+ * @param res - response
+ */
 exports.find = (req, res) => {
     Product.find(req.params.name, (err, data) => {
         if (err) {
@@ -35,10 +43,14 @@ exports.find = (req, res) => {
         } else {
             res.send(data);
         }
-    })
+    });
 };
 
-// Retrieve all Products from the database.
+/**
+ * Retrieves all products
+ * @param req - request
+ * @param res - response
+ */
 exports.findAll = (req, res) => {
     Product.findAll((err, data) => {
         if (err) {
@@ -49,28 +61,33 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Update a Product identified
+/**
+ * Updates a product
+ * @param req - request
+ * @param res - response
+ */
 exports.update = (req, res) => {
     if (!req.body) {
         res.status(400).send({
             message: "Content cannot be empty!"
         });
     }
-    Product.update(
-        new Product(req.body),
-        (err, data) => {
-            if (err) {
-                throw err;
-            } else {
-                res.send(data);
-            }
+    Product.update(new Product(req.body), (err, data) => {
+        if (err) {
+            throw err;
+        } else {
+            res.send(data);
         }
-    )
+    });
 };
 
-// Delete a Product
+/**
+ * Deletes a product
+ * @param req - request
+ * @param res - response
+ */
 exports.delete = (req, res) => {
-    Product.delete(req.params.name, (err, data) => {
+    Product.delete(req.params.name, (err) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({message: `No product found with name ${req.params.name}.`});
