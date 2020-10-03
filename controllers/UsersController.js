@@ -41,8 +41,9 @@ exports.create = (req, res) => {
 exports.find = (req, res) => {
     User.find(req.params.username, (err, data) => {
         if (err) {
-            throw err;
+            res.status(404).send({message: `No user found with username ${req.params.name}.`});
         } else {
+            console.log(data);
             res.send(data);
         }
     });
@@ -55,10 +56,15 @@ exports.find = (req, res) => {
  * @param res - response
  */
 exports.update = (req, res) => {
-    User.update(new User(req.body), (err, data) => {
+    User.update(req.params.username, new User(req.body), (err, data) => {
         if (err) {
-            throw err;
+            if (err.kind === "not_found") {
+                res.status(404).send({message: `No user found with username ${req.params.name}.`});
+            } else {
+                res.status(500).send({message: `Could not update user with username ${req.params.name}.`});
+            }
         } else {
+            console.log(data);
             res.send(data);
         }
     });
