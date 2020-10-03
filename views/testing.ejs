@@ -38,7 +38,7 @@
 
 <div>
     <% data.forEach(function(item, index) { %>
-            <p><%= item.name %>: <%= item.description %></p>
+        <p><%= JSON.stringify(item) %></p>
     <% }); %>
 </div>
 
