@@ -9,8 +9,8 @@ dotenv.config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var productsRouter = require('./routes/products');
-var shoppingCartRouter = require('./routes/shoppingcart');
+var productsRouter = require('./routes/ProductsRouter');
+var shoppingCartRouter = require('./public/javascripts/shoppingcart');
 var app = express();
 
 // view engine setup
