@@ -1,9 +1,16 @@
 <!doctype html>
 <html lang = "en">
 <head>
-    <title>Product Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+  integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.11.0/underscore-min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -11,22 +18,36 @@
     <h1>Corona</h1>
     <h1>Product Page</h1>
 
-    <!--Navigation bar (log in, sign up, log out, search)-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-        <a class="nav-link" href="/shoppingCart">Shopping Cart</a>
-        <a class="nav-link" href="#">Logout</a>
-<!-- temp -->
-        <a class="nav-link" href="/products">products</a>
-        <a class="nav-link" href="/productDetails">Product Details</a>
-<!-- temp end -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+    <header >
+      <div class="d-flex flex-column flex-md-row align-items-center px-md-4 mb-3 bg-light">
+        <h5 class="my-0 mr-md-auto font-weight-normal"></h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+          <!-- <a class="p-2 text-dark" href="#">Features</a>
+          <a class="p-2 text-dark" href="#">Enterprise</a> -->
+          <a class="p-2 text-dark" href="#">Signup</a>
+          <a class="p-2 text-dark" href="#">Login</a>
+          <!-- <a class="btn btn-outline-primary" href="#">Sign up</a>
+          <a class="btn btn-outline-primary" href="#">Login</a> -->
+          
+        </nav>
+        
+        <form class="form-inline">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        </form>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Menu
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="/ShoppingCart">Shopping Cart</a>
+            <button class="dropdown-item" type="button">IDK</button>
+            <a class="dropdown-item" type="button" href="/products">Products</a>
+            <button class="dropdown-item" type="button">Logout</button>
+          </div>
         </div>
-    </nav>
+  
+      </div>
+    </header>
 
     
     <!--Area for scrolling over product images/prices-->    
@@ -38,13 +59,15 @@
                     <a href="/productDetails">
                       <img src="/img/beer_test_img.jpg" class="card-img-top" alt="...">
                       <div class="card-body">
-                        <p class="card-text"><%= item.name %></br><%= item.description %></p>
+                        <p class="card-text"></p>
                         <div class="d-flex justify-content-between align-items-center">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                          </div>
-                          <small class="text-muted">9 mins</small>
+                          <!-- name -->
+                          <%= item.name %></br>
+                          <!-- brand -->
+                          <%= item.description %></br>
+                          <!-- price -->
+                          <p> $1.25</p>
+                          <!-- rating -->
                         </div>
                       </div>
                     </a>
