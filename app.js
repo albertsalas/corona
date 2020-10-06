@@ -7,20 +7,12 @@ const logger = require('morgan');
 const dotenv = require("dotenv");
 dotenv.config();
 
-<<<<<<< HEAD
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var productsRouter = require('./routes/products');
-var productDetailsRouter = require('./routes/productDetails');
-var shoppingCartRouter = require('./routes/shoppingcart');
-var app = express();
-=======
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/UsersRouter');
 const productsRouter = require('./routes/ProductsRouter');
+const productDetailsRouter = require('./routes/productDetails');
 const shoppingCartRouter = require('./public/javascripts/shoppingcart');
 const app = express();
->>>>>>> ed25fa19fc12095fd6fd80e2ae07d95dde17fac8
 
 // view engine setup
 app.set("view engine", "ejs");
