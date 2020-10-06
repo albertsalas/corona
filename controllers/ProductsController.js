@@ -57,7 +57,7 @@ exports.findAll = (req, res) => {
             res.status(500).send({message: err.message || "An error occurred when retrieving products."});
         } else {
             console.log(data);
-            res.render('testing', {data: data});
+            res.render('product', {data: data});
         }
     });
 };
