@@ -27,7 +27,7 @@
             <% data.forEach(function(item, index) { %>
                 <div class="col-md-4">
                   <div class="card mb-4 shadow-sm">
-                    <a href="/productDetails">
+                    <a href="/products/<%= item.name %>">
                       <img src="/img/beer_test_img.jpg" class="card-img-top" alt="...">
                       <div class="card-body">
                         <p class="card-text"></p>
@@ -37,7 +37,7 @@
                           <!-- brand -->
                           <%= item.description %></br>
                           <!-- price -->
-                          <p> $1.25</p>
+                          <p> $<%= item.price %> </p>
                           <!-- rating -->
                         </div>
                       </div>
@@ -47,24 +47,6 @@
             <% }); %>
         </div>
     </div>
-        
-
-    <script>
-
-        function PopulatePage() {
-            const request = new XMLHttpRequest();
-
-            //I think it should be DB file in the second argument
-            /*The optional third parameter sets whether the request is asynchronous.
-            If true(the default ), JavaScript execution will continue and the user can
-            interact with the page while the server response has yet to arrive.
-            */
-            request.open("get", "");
-
-            
-        }
-
-    </script>
 
 </body>
 </html>

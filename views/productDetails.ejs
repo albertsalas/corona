@@ -17,28 +17,28 @@
 
     <h1>Corona</h1>
     <h1>Product Details Page</h1>
-
+	
     <!--Navigation bar (log in, sign up, log out, search)-->
     <%- include('./partials/nav.ejs') %>
-    </br>
+	</br>
+	
     <div class = "row">
         <div class="col text-center">
-            <h3>Simple Beer. Just Beer</h3>
+			<!-- name -->
+			<h3><%=item[0].name%></h3>  
+			<!-- Image -->
             <img src="/img/beer_test_img.jpg" class="img-fluid" alt="Responsive image">
         </div>
     
         <div class="col">
-            </br></br>
-            <p> This is a simple beer. La so ray teela mee latee, la so ray meela mee latee, la so ray 
-                sotee mee lamee, la so ray sotee mee dohlasotee, la so ray teemeetee mee teefa, la so ray 
-                teemeetee mee meeteesola, la so ray teeso mee Lamee, la so ray teeso mee Sotee, la so ray 
-                fafa mee meetee, la so ray meela mee teemeefa...     
-                mee somee, ray lalamee so mee so latee ray teedoh lalamee, soso meetee mee la rayfala 
-                dohsomeelafa meelalatee so la teefa teelatee, mee doh mee mee teela, mee ray solasolatee 
-                teetee mee meesolaso so.</p>
-            <div id = "price">
-                
-            </div>
+			</br></br>
+			<!-- description -->
+			<p> <%=item[0].description%> </p>
+			<!-- price -->
+            <div id = "price" value = "<%=item[0].price%>">
+                <p><%=item[0].price%></p>
+			</div>
+			<!-- quantity -->
             <div class="input-group">
                 <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="50">
                 <button>Add To Cart</button>
@@ -47,12 +47,18 @@
     </div>
 
     <script>
-        function myFunction(p1, p2) {
-            return p1 * p2;
+        function calcPrice(p, q) {
+            return p * q;
         }
-        var price = 1.25;
-        var quantity = document.getElementById("qty").value;
-        document.getElementById("price").innerHTML = "Price: " + myFunction(price, quantity);
+		var price = Number(document.getElementById("price").innerHTML);
+		console.log(price);
+		var quantity = document.getElementById("qty").value;
+		console.log(quantity);
+        // document.getElementById("price").innerHTML = "Price: " + calcPrice(price, quantity);
+
+        function addToCart(){
+
+        }
     </script>
     
 </body>
