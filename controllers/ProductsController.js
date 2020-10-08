@@ -25,7 +25,18 @@ exports.create = (req, res) => {
                 message: err.message || "Error while creating product."
             });
         } else {
-            res.send(data);
+            res.redirect("products/edit");
+        }
+    });
+};
+
+exports.edit = (req, res) => {
+    Product.findAll((err, data) => {
+        if (err) {
+            res.status(500).send({message: err.message || "An error occurred when retrieving products."});
+        } else {
+            console.log(data);
+            res.render('EditProducts', {data: data});
         }
     });
 };
