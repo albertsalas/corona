@@ -12,6 +12,7 @@ const usersRouter = require('./routes/UsersRouter');
 const productsRouter = require('./routes/ProductsRouter');
 const productDetailsRouter = require('./routes/productDetails');
 const shoppingCartRouter = require('./public/javascripts/shoppingcart');
+const registerRouter = require('./routes/register');
 const app = express();
 
 // view engine setup
@@ -31,6 +32,7 @@ app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/productDetails', productDetailsRouter);
 app.use('/shoppingcart', shoppingCartRouter);
+app.use('/register', registerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -47,5 +49,9 @@ app.use(function (err, req, res) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+app.listen(process.env.PORT || 3000, function(){
+    console.log('Server has been started');
+})
 
 module.exports = app;
