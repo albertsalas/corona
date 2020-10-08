@@ -15,17 +15,13 @@
 </head>
 <body class="bg-light">
 
-  <header style="padding: 0%; margin-top: -2%;">
-    <div class="d-flex flex-column flex-md-row align-items-center px-md-4 mb-3 bg-light">
+  <header>
+    <!-- <div class="d-flex flex-column flex-md-row align-items-center px-md-4 mb-3 bg-light"> -->
+    <div class="d-flex flex-column flex-md-row align-items-center bg-light">
       <h5 class="my-0 mr-md-auto font-weight-normal"></h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <!-- <a class="p-2 text-dark" href="#">Features</a>
-        <a class="p-2 text-dark" href="#">Enterprise</a> -->
         <a class="p-2 text-dark" href="#">Signup</a>
         <a class="p-2 text-dark" href="#">Login</a>
-        <!-- <a class="btn btn-outline-primary" href="#">Sign up</a>
-        <a class="btn btn-outline-primary" href="#">Login</a> -->
-        
       </nav>
       
       <form class="form-inline">
@@ -37,14 +33,14 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="/ShoppingCart">Shopping Cart</a>
-          <button class="dropdown-item" type="button">IDK</button>
-          <a class="dropdown-item" type="button" href="/products">Products</a>
+          <a class="dropdown-item" href="/products">Products</a>
           <button class="dropdown-item" type="button">Logout</button>
         </div>
       </div>
 
     </div>
   </header>
+  
     <hr>
       <h1>
         <img src="/img/mugs.png" alt="" id="mug">
@@ -53,20 +49,24 @@
       </h1>
     <hr>
 
-    <div class="container" id="test">
-        
-      <div class="row row-cols-2">
-        <div class="card centerCard " >
-          <!-- <div class="card-body"> -->
-            <div class="col items" style="font-size: 1.5em;">Product at $price</div>
-          <!-- </div> -->
+  
 
-        </div>
-        <div class="col">
-          <button type="button" class="btn btn-danger btn-sm">Danger</button>
+    <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
+      <div class="card-header">
+        <div class="d-flex justify-content-between">
+          <div class="">Product Ordered: </div>
+          <div class="">Total Price: </div>
+          <div class="">Ship to: username</div>
         </div>
       </div>
-            
+      <div class="card-body">
+        <h5 class="card-title">Product Name</h5>
+        <p class="card-text">
+          Description of product maybe
+        </p>
+        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+
+      </div>
     </div>
         
         
