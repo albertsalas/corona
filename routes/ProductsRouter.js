@@ -4,6 +4,8 @@ const products = require("../controllers/ProductsController.js");
 
 router.post('/', products.create);
 
+router.get('/edit', products.edit);
+
 router.get('/:name', products.find);
 
 router.get('/', products.findAll);
