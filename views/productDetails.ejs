@@ -35,7 +35,7 @@
 			<!-- description -->
 			<p> <%=item[0].description%> </p>
 			<!-- price -->
-            <div id = "price" value = "<%=item[0].price%>">
+            <div id = "price" value = <%=item[0].price%>>
                 <p>Price: $<%=item[0].price%></p>
 			</div>
 			<!-- quantity -->
@@ -47,36 +47,39 @@
     </div>
 
     <script>
-        function calcPrice(p, q) {
-            return p * q;
-        }
-		var price = Number(document.getElementById("price").innerHTML);
-		console.log(price);
-		var quantity = document.getElementById("qty").value;
-		console.log(quantity);
+        $(document).ready(function(){
+            console.log($("#price").val());
+            var price = parseFloat($("#price").val());
+            console.log(price);
+            var quantity = $("#qty").val();
+            console.log(quantity);
+            
+            function calcPrice(p, q) {
+                return p * q;
+            }
 
-
-        $("#qty").change(function(event){
-            event.preventDefault();
-            // alert($("#qty").val());
-            $.ajax({
-                url: "./<%=item[0].name%>",
-                type: "GET",
-                contentType: "json",
-                data: "",
-                success: function () {
-                    document.getElementById("price").innerHTML = "Price: $" + calcPrice(price, quantity);
-                },
-                error: function (request, error) {
-                    alert("Request: " + JSON.stringify(error));
-                }
+            $("#qty").change(function(event){
+                event.preventDefault();
+                // alert($("#qty").val());
+                $.ajax({
+                    url: "./<%=item[0].name%>",
+                    type: "GET",
+                    contentType: "json",
+                    data: "",
+                    success: function () {
+                        document.getElementById("price").innerHTML = "Price: $" + calcPrice(price, quantity);
+                    },
+                    error: function (request, error) {
+                        alert("Request: " + JSON.stringify(error));
+                    }
+                });
             });
+            
+            function addToCart(){
+
+            }
+
         });
-
-        
-        function addToCart(){
-
-        }
     </script>
     
 </body>
