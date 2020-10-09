@@ -34,8 +34,8 @@
 			</br></br>
 			<!-- description -->
 			<p> <%=item[0].description%> </p>
-			<!-- price -->
-            <div id = "price" value = <%=item[0].price%>>
+			<!-- price -->  
+            <div id = "price" data-price = "<%=item[0].price%>">
                 <p>Price: $<%=item[0].price%></p>
 			</div>
 			<!-- quantity -->
@@ -46,10 +46,13 @@
         </div>
     </div>
 
+    <%- include('./partials/footer.ejs') %>
+
     <script>
         $(document).ready(function(){
-            console.log($("#price").val());
-            var price = parseFloat($("#price").val());
+            var elementPrice = $("#price"); // get element
+            var price = elementPrice.attr("data-price"); // get attribute
+            price = parseFloat(price); // set to float
             console.log(price);
             var quantity = $("#qty").val();
             console.log(quantity);
@@ -67,7 +70,10 @@
                     contentType: "json",
                     data: "",
                     success: function () {
-                        document.getElementById("price").innerHTML = "Price: $" + calcPrice(price, quantity);
+                        quantity = $("#qty").val();
+                        var newPrice = calcPrice(price, quantity);
+                        $("#price").html("Price: $" + newPrice);
+                        console.log(newPrice);
                     },
                     error: function (request, error) {
                         alert("Request: " + JSON.stringify(error));
