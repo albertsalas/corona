@@ -52,7 +52,8 @@ exports.find = (req, res) => {
             throw err;
         } else {
             console.log(data);
-            res.send(data);
+            // res.send(data);
+            res.render('productDetails', {item: data});
         }
     });
 };
