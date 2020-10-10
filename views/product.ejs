@@ -1,52 +1,53 @@
 <!doctype html>
-<html lang = "en">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Page</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
-  integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.11.0/underscore-min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.11.0/underscore-min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
 </head>
 
-<body>
+<%- include('./partials/nav.ejs') %>
 
-    <h1>Corona</h1>
-    <h1>Product Page</h1>
 
-    <%- include('./partials/nav.ejs') %>
-
-    
-    <!--Area for scrolling over product images/prices-->    
-    <div class="container">
-        <div class = "row">
-            <% data.forEach(function(item, index) { %>
-                <div class="col-md-4">
-                  <div class="card mb-4 shadow-sm">
+<!--Area for scrolling over product images/prices-->
+<div class="container">
+    <div class="row">
+        <% data.forEach(function(item, index) { %>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
                     <a href="/products/<%= item.name %>">
-                      <img src="/img/beer_test_img.jpg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <p class="card-text"></p>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <!-- name -->
-                          <%= item.name %></br>
-                          <!-- brand -->
-                          <%= item.description %></br>
-                          <!-- price -->
-                          <p> $<%= item.price %> </p>
-                          <!-- rating -->
+                        <img src="/img/beer_test_img.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- name -->
+                                <%= item.name %>
+                                <!-- brand -->
+                                <%= item.description %>
+                                <!-- price -->
+                                <p> $<%= item.price %> </p>
+                                <!-- rating -->
+                            </div>
                         </div>
-                      </div>
                     </a>
-                  </div>
                 </div>
-            <% }); %>
-        </div>
+            </div>
+        <% }); %>
     </div>
+</div>
 
 </body>
 </html>
