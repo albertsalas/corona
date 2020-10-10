@@ -28,30 +28,40 @@
 			</br></br>
 			<!-- description -->
 			<p> <%=item[0].description%> </p>
-			<!-- price -->
-            <div id = "price" value = <%=item[0].price%>>
+			<!-- price -->  
+            <div id = "price" data-price = "<%=item[0].price%>">
                 <p>Price: $<%=item[0].price%></p>
 			</div>
 			<!-- quantity -->
             <div class="input-group">
                 <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="50">
-                <button>Add To Cart</button>
+                <button id = "addToCart">Add To Cart</button>
             </div>  
+            <div id = "successAlert" class="alert alert-success" role="alert" style = "display: none;">
+                Added to Cart!
+            </div>
         </div>
     </div>
 
+    <%- include('./partials/footer.ejs') %>
+
     <script>
         $(document).ready(function(){
-            console.log($("#price").val());
-            var price = parseFloat($("#price").val());
-            console.log(price);
+
+            let product = {
+                name: "<%=item[0].name%>",
+                description: "<%=item[0].description%>",
+                price: "<%=item[0].price%>",
+                quantity: "<%=item[0].quantity%>"
+            };
+            
             var quantity = $("#qty").val();
-            console.log(quantity);
+            quantity = parseInt(quantity);
             
             function calcPrice(p, q) {
                 return p * q;
             }
-
+// change quantity
             $("#qty").change(function(event){
                 event.preventDefault();
                 // alert($("#qty").val());
@@ -61,18 +71,65 @@
                     contentType: "json",
                     data: "",
                     success: function () {
-                        document.getElementById("price").innerHTML = "Price: $" + calcPrice(price, quantity);
+                        quantity = $("#qty").val();
+                        quantity = parseInt(quantity);
+                        var newPrice = calcPrice(product.price, quantity);
+                        $("#price").html("Price: $" + newPrice);
+                        console.log(newPrice);
                     },
                     error: function (request, error) {
                         alert("Request: " + JSON.stringify(error));
                     }
                 });
             });
-            
-            function addToCart(){
+// click 'add to cart' button
+            $("#addToCart").on('click', function(){
+                console.log("Add to cart");
+                quantity = parseInt(quantity);
+// overall items in cart
+                let numItems = localStorage.getItem('items');
+                numItems = parseInt(numItems);
+
+                if( numItems ){
+                    localStorage.setItem('items', numItems + quantity);
+                } else {
+                    localStorage.setItem('items', quantity);
+                }
+
+                $("#successAlert").show();
+// quantity of single item
+                setItems(product);
+
+            });
+
+            function setItems(product){
+                let cartItems = localStorage.getItem('productsInCart');
+                cartItems = JSON.parse(cartItems);
+                quantity = parseInt(quantity);
+                // if cart has things in it
+                if(cartItems != null){
+                    // adding new item to cart if cart is not empty
+                    if(cartItems[product.name] == undefined){
+                        cartItems = {
+                            ...cartItems,
+                            [product.name]: product
+                        };
+                    }
+                    let cartItemsQuantity = parseInt(cartItems[product.name].quantity)
+                    cartItemsQuantity += parseInt(quantity);
+                    cartItems[product.name].quantity = parseInt(cartItemsQuantity);
+                } else { // if cart is empty, add first item
+                    product.quantity = quantity;
+                    cartItems = {
+                        [product.name]: product
+                    };
+                }
+
+                console.log(cartItems[product.name].quantity);
+                
+                localStorage.setItem("productsInCart", JSON.stringify(cartItems));
 
             }
-
         });
     </script>
     
