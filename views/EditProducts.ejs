@@ -10,57 +10,77 @@
 
     <title>Add Product</title>
 </head>
-<body>
-<div id="products" class="d-flex p-2 justify-content-center">
-    <div>
-        <table class="table table-dark table-fit">
-            <thead>
-            <tr>
-                <th scope="col">Product Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td class="text-center">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
-                </td>
-                <td class="text-center">
-                    <input type="text" class="form-control" id="description" name="description"
-                           placeholder="Enter description">
-                </td>
-                <td class="text-center">
-                    <input type="number" step="0.01" class="form-control" id="price" name="price"
-                           placeholder="Enter price">
-                </td>
-                <td class="text-center">
-                    <input type="number" step="1" class="form-control" id="quantity" name="quantity"
-                           placeholder="Enter quantity">
-                </td>
-                <td class="text-center">
-                    <button id="addButton" type="button" class="btn btn-success">Add</button>
-                </td>
-            </tr>
-            <% data.forEach(function(item, index) { %>
+<%- include('./partials/nav.ejs') %>
+<div class="container-fluid">
+    <div id="products" class="d-flex p-2 justify-content-center row">
+        <div>
+            <table class="table table-dark table-fit">
+                <thead>
                 <tr>
-                    <td class="text-center"> <%= item.name %> </td>
-                    <td class="text-center"> <%= item.description %> </td>
-                    <td class="text-center"> $<%= item.price %> </td>
-                    <td class="text-center"> <%= item.quantity %> </td>
-                    <td class="text-center">
-                        <button data-name="<%= item.name %>" type="button" class="btn btn-primary m-2 editButton">Edit
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col" class="text-center">
+                        <button id="addNewProductButton" type="button" class="btn btn-success">
+                            Add New Product
                         </button>
-                        <button data-name="<%= item.name %>" type="button" class="btn btn-danger m-2 deleteButton">
-                            Delete
-                        </button>
-                    </td>
+                    </th>
                 </tr>
-            <% }); %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <% data.forEach(function(item) { %>
+                    <tr>
+                        <td id="name_<%= item.name %>" class="text-center"
+                            data-name="<%= item.name %>"> <%= item.name %> </td>
+                        <td id="description_<%= item.name %>" class="text-center"
+                            data-description="<%= item.description %>"> <%= item.description %> </td>
+                        <td id="price_<%= item.name %>" class="text-center" data-price="<%= item.price %>">
+                            $<%= item.price %> </td>
+                        <td id="quantity_<%= item.name %>" class="text-center"
+                            data-quantity="<%= item.quantity %>"> <%= item.quantity %> </td>
+                        <td class="text-center">
+                            <button data-name="<%= item.name %>" type="button" class="btn btn-primary m-2 editButton">
+                                Edit
+                            </button>
+                            <button data-name="<%= item.name %>" type="button" class="btn btn-danger m-2 deleteButton">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add/Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <div class="flex-md-grow-1">
+                        <input type="text" class="form-control m-1" id="name" name="name" placeholder="Enter name">
+                        <input type="text" class="form-control m-1" id="description" name="description"
+                               placeholder="Enter description">
+                        <input type="number" step="0.01" class="form-control m-1" id="price" name="price"
+                               placeholder="Enter price">
+                        <input type="number" step="1" class="form-control m-1" id="quantity" name="quantity"
+                               placeholder="Enter quantity">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveButton" type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -76,52 +96,98 @@
 
 <script>
     $(document).ready(function () {
-
+        let editing = false;
+        let name = "";
         $(document).on('click', '.deleteButton', function () {
             event.preventDefault();
             event.stopPropagation();
-            getProductName(this);
+            name = getDataAttribute("name", this);
+            deleteProduct(name);
         });
 
-        $(document).on('click', '#addButton', function () {
-            let newProductHash = {}
-            newProductHash['name'] = document.getElementById("name").value;
-            newProductHash['description'] = document.getElementById("description").value;
-            newProductHash['price'] = document.getElementById("price").value;
-            newProductHash['quantity'] = document.getElementById("quantity").value;
+        $(document).on('click', '.editButton', function () {
+            editing = true;
+            name = getDataAttribute("name", this);
+            let descriptionElement = document.getElementById("description_" + name);
+            let priceElement = document.getElementById("price_" + name);
+            let quantityElement = document.getElementById("quantity_" + name);
+            document.getElementById("name").value = name;
+            document.getElementById("description").value = getDataAttribute("description", descriptionElement);
+            document.getElementById("price").value = getDataAttribute("price", priceElement);
+            document.getElementById("quantity").value = getDataAttribute("quantity", quantityElement);
+            $("#productModal").modal();
+        });
 
-            for (let key in newProductHash) {
-                if (newProductHash[key] === "" || !newProductHash[key]) {
-                    alert("ALL FIELDS MUST BE FILLED");
+        $(document).on('click', '#addNewProductButton', function () {
+            editing = false;
+            $("#productModal").modal('toggle');
+            document.getElementById("name").value = "";
+            document.getElementById("description").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("quantity").value = "";
+        });
+
+        $(document).on('click', '#saveButton', function () {
+            let productHash = {};
+            productHash['name'] = document.getElementById("name").value;
+            productHash['description'] = document.getElementById("description").value;
+            productHash['price'] = document.getElementById("price").value;
+            productHash['quantity'] = document.getElementById("quantity").value;
+
+            for (let key in productHash) {
+                if (productHash[key] === "" || !productHash[key]) {
+                    alert("ALL FIELDS MUST BE FILLED!");
                     return;
                 }
             }
-            addProduct(newProductHash);
+            if (editing) {
+                editProduct(name, productHash);
+            } else {
+                addProduct(productHash);
+            }
         });
-
 
         function reloadTable() {
             $('#products').load(document.URL + ' #products');
         }
 
-        function getProductName(button) {
-            let name = button.getAttribute("data-name");
-            deleteProduct(name);
+        function getDataAttribute(type, element) {
+            return element.getAttribute("data-" + type);
         }
 
-        function addProduct(newProductHash) {
+        function addProduct(productHash) {
             $.ajax({
-
                 url: "/products",
                 data: {
-                    name: newProductHash['name'],
-                    description: newProductHash['description'],
-                    price: newProductHash['price'],
-                    quantity: newProductHash['quantity']
+                    name: productHash['name'],
+                    description: productHash['description'],
+                    price: productHash['price'],
+                    quantity: productHash['quantity']
                 },
                 type: 'POST',
                 success: function () {
                     reloadTable();
+                    $("#productModal").modal('toggle');
+                },
+                error: function (request, error) {
+                    alert("Request: " + JSON.stringify(error));
+                }
+            });
+        }
+
+        function editProduct(productName, productHash) {
+            $.ajax({
+                url: "/products/" + productName,
+                data: {
+                    name: productHash['name'],
+                    description: productHash['description'],
+                    price: productHash['price'],
+                    quantity: productHash['quantity']
+                },
+                type: 'PUT',
+                success: function () {
+                    reloadTable();
+                    $("#productModal").modal('toggle');
                 },
                 error: function (request, error) {
                     alert("Request: " + JSON.stringify(error));
@@ -131,7 +197,6 @@
 
         function deleteProduct(productName) {
             $.ajax({
-
                 url: "/products/" + productName,
                 type: 'DELETE',
                 success: function () {
