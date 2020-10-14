@@ -34,5 +34,36 @@
     </div>
 
     <%- include('./partials/footer.ejs') %>
+
+    <script>
+      $(document).ready(function(){
+        
+        // function displayItems(){
+        //   let cartItems = localStorage.getItem('productsInCart');
+        //   cartItems = JSON.stringify(cartItems);
+
+        //   console.log(cartItems);
+
+        //   let productContainer = $(".card-body");
+        //   if(cartItems && productContainer){
+        //       productContainer.html(``);
+        //       Object.values(cartItems).map(item => {
+        //           productContainer.innerHtml += `
+        //           <div class="card-body">
+        //               <h5 class="card-title">${product.name}</h5>
+        //               <p class="card-text">
+        //                   ${product.description}
+        //               </p>
+        //               <button type="button" class="btn btn-danger btn-sm">Delete</button>
+        //           </div>
+        //           `;
+        //       });
+        //     }
+        // }
+
+        //displayItems();
+      });
+    </script>
+
 </body>
 </html>
