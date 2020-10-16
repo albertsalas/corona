@@ -6,6 +6,7 @@ const User = require("../models/User.js");
  * @param req - request
  * @param res - response
  */
+
 exports.create = (req, res) => {
     console.log(req.body);
     if (!req.body) {
@@ -27,7 +28,8 @@ exports.create = (req, res) => {
                 message: err.message || "Error while creating user."
             });
         } else {
-            res.send(data);
+            // res.send(data);
+            res.render('login');
         }
     });
 };

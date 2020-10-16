@@ -53,7 +53,7 @@ exports.find = (req, res) => {
         } else {
             console.log(data);
             // res.send(data);
-            res.render('productDetails', {item: data});
+            res.render('productDetails', {item: data, title: req.params.name});
         }
     });
 };
@@ -69,7 +69,7 @@ exports.findAll = (req, res) => {
             res.status(500).send({message: err.message || "An error occurred when retrieving products."});
         } else {
             console.log(data);
-            res.render('product', {data: data});
+            res.render('product', {data: data, title: "Products"});
         }
     });
 };

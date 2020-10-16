@@ -11,7 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/UsersRouter');
 const productsRouter = require('./routes/ProductsRouter');
 const productDetailsRouter = require('./routes/productDetails');
-const shoppingCartRouter = require('./public/javascripts/shoppingcart');
+const shoppingCartRouter = require('./routes/shoppingcart');
 const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
 const app = express();
@@ -51,5 +51,7 @@ app.use(function (err, req, res) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+
 
 module.exports = app;
