@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+const mysql = require('mysql');
 
 // database setup
 // first we check if Heroku environment variables are available, if not then we use local .env file

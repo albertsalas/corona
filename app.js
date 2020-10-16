@@ -14,7 +14,6 @@ const productDetailsRouter = require('./routes/productDetails');
 const shoppingCartRouter = require('./routes/shoppingcart');
 const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
-const connection = require('./public/javascripts/connection');
 const app = express();
 
 // view engine setup

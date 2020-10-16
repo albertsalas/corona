@@ -29,7 +29,7 @@ exports.create = (req, res) => {
             });
         } else {
             // res.send(data);
-            res.render('/login');
+            res.render('login');
         }
     });
 };
