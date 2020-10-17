@@ -13,7 +13,7 @@
 
   <%- include('./partials/nav.ejs') %>
 
-    <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
+    <!-- <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
       <div class="card-header">
         <div class="d-flex justify-content-between">
           <div class="">Product Ordered: </div>
@@ -26,47 +26,62 @@
         <p class="card-text">
           Description of product maybe
         </p>
-        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+        <button type="button" class="btn btn-danger btn-sm" value="idk">Delete</button>
 
       </div>
-    </div>
+    </div> -->
 
     <div id="items">
 
     </div>
 
-    <!-- <hr style="color: gray; height: 1px; background-color: gray;">
-  -->
-
     <%- include('./partials/footer.ejs') %>
 
     <script>
+
+   
+
       var items = [];
       items = JSON.parse(localStorage.getItem('productsInCart'));
       $("#items").html("");
       if(items != null){
+        let count = 0;
         items.forEach(function(i){
           $('#items').append(`
-          <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
-      <div class="card-header">
-        <div class="d-flex justify-content-between">
-          <div class="">Product Ordered: ${i.name}</div>
-          <div class="">Total Price: ${i.price * i.quantity}</div>
-          <div class="">Ship to: username</div>
-        </div>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Product Name${i.name}</h5>
-        <p class="card-text">
-          ${i.description}
-        </p>
-        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-
-      </div>
-    </div>
-          `);
+            <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
+              <div class="card-header">
+                <div class="d-flex justify-content-between">
+                  <div class="">Ordered: ${i.quantity} @ $${i.price}</div>
+                  <div class="">Total Price: $${i.price * i.quantity}</div>
+                  <div class="">Ship to: username</div>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">${i.name}</h5>
+                <p class="card-text">${i.description}</p>
+                <button type="button" class="btn btn-danger btn-sm remove" value=${count}>Remove</button>
+              </div>
+            </div>`);
+            count++;
         });
+      }else{
+        $('#items').append(`<div><h2>THERE ARE CURRENTLY NO ITEMS IN YOUR CART</2><div>`);
       }
+
+      $(".remove").on('click', function(){
+        console.log($(this).val());
+        console.log(items); 
+        items.splice($(this).val(),1);
+        console.log(items);
+        if(items.length >0){
+          localStorage.setItem("productsInCart", JSON.stringify(items));
+        }
+        else{
+          localStorage.setItem("productsInCart", null);
+        }
+        location.reload();
+
+      });
     </script>
 
     <script>
