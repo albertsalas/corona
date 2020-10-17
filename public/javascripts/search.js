@@ -25,6 +25,10 @@ $("#search").on("change", function(){
       contentType: "json",
       data: "",
       success: function(result){
+        var a = result;
+        console.log(a.item[0].name);
+         let newURL = "./products/"+a.item[0].name;
+         window.location = newURL;
         console.log("search successful");
       }
     })

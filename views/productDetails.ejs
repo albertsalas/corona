@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
-</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
 <body class="bg-light">
     <!--Navigation bar (log in, sign up, log out, search)-->
     <%- include('./partials/nav.ejs') %>
@@ -41,6 +42,135 @@
 
 
     <script>
+        $(document).ready(function(){
+            // getting data from db
+            var currentQuantity = parseInt($("#qty").val());
+            var product = {
+                name: "<%=item[0].name%>",
+                description: "<%=item[0].description%>",
+                price: parseInt('<%=item[0].price%>'),
+                quantity: currentQuantity
+            };
+            // calculating end total based on price and quantity 
+            function calcPrice(p, q) {
+                return p * q;
+            }
+            // change quantity
+            $("#qty").change(function(event){
+                event.preventDefault();
+                // alert($("#qty").val());
+                $.ajax({
+                    url: "./<%=item[0].name%>",
+                    type: "GET",
+                    contentType: "json",
+                    data: "",
+                    success: function () {
+                        currentQuantity = parseInt($("#qty").val());
+                        var newPrice = calcPrice(product.price, currentQuantity);
+                        $("#price").html("Price: $" + newPrice);
+                        // console.log(newPrice);
+                        // console.log(currentQuantity);
+                        product.quantity = currentQuantity;
+                    },
+                    error: function (request, error) {
+                        alert("Request: " + JSON.stringify(error));
+                    }
+                });                
+            });
+            // click 'add to cart' button
+            $("#addToCart").on('click', function(){
+                // console.log("Add to cart");
+                // console.log(product)
+                // overall items in cart
+                // let numItems = localStorage.getItem('items');
+                // numItems = parseInt(numItems);
+                // console.log(numItems);
+                // if number > 0
+                // if( numItems ){
+                    // increase total by current quantity
+                    // let addUp = parseInt(parseInt(numItems) + parseInt(quantity));
+                    // localStorage.setItem('items', addUp);
+                // } else {
+                    // localStorage.setItem('items', quantity);
+                // }
+
+                $("#successAlert").show();
+                // quantity of single item
+
+                setItems(product);
+              
+            });
+
+            function setItems(product){
+                let cartItems = [];
+                cartItems = JSON.parse(localStorage.getItem('productsInCart'));
+
+                if(cartItems == null){
+                    cartItems = [];
+                }
+                var a = 0;
+                // cartItems = JSON.parse(cartItems);
+                 //console.log(cartItems)
+                 //console.log(Array.isArray(cartItems))
+                // console.log(cartItems.length)
+                // if cart has things in it
+                if(cartItems.length != 0){
+                    
+                    let i;
+                    var t = false;
+                    for(i = 0; i<cartItems.length;i++){
+                        if(cartItems[i].name == product.name){
+                            cartItems[i].quantity += product.quantity;
+                            t = true;
+                            break;
+                        }
+                    }
+                    if(t != true){
+                        cartItems.push(product);
+                    }
+                                    
+                    // cartItems.forEach(function(i){
+                    //     // console.log(i.name == product.name)
+                    //     if(!tempItems.includes(product.name) && tempItems.length == 0){
+                    //         tempItems.push(product.name);
+                    //     }
+                    //     // if(i.name == product.name){
+                    //     //     i.quantity += product.quantity;
+                            
+                    //     // }else{
+                    //     //     return;
+
+                    //     // }
+                    // });
+                    // if(!tempItems.includes(product.name)){
+                    //     cartItems.push(product);
+                    // }else{
+                    //     cartItems.forEach(function(i){
+
+                    //         i.quantity += product.quantity;
+                    //     });
+                    // }
+
+                localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+                }else { // if cart is empty, add first item
+                    cartItems.push(product);
+                    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+                }
+
+         
+                
+
+            }
+        });
+    </script>
+    
+    <br>
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>
+
+    <!-- <script>
         $(document).ready(function(){
 
             let product = {
@@ -126,10 +256,5 @@
 
             }
         });
-    </script>
+    </script> -->
     
-    <br>
-    <%- include('./partials/footer.ejs') %>
-
-</body>
-</html>

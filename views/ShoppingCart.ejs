@@ -30,10 +30,44 @@
 
       </div>
     </div>
-        
+
+    <div id="items">
+
     </div>
 
+    <!-- <hr style="color: gray; height: 1px; background-color: gray;">
+  -->
+
     <%- include('./partials/footer.ejs') %>
+
+    <script>
+      var items = [];
+      items = JSON.parse(localStorage.getItem('productsInCart'));
+      $("#items").html("");
+      if(items != null){
+        items.forEach(function(i){
+          $('#items').append(`
+          <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
+      <div class="card-header">
+        <div class="d-flex justify-content-between">
+          <div class="">Product Ordered: ${i.name}</div>
+          <div class="">Total Price: ${i.price * i.quantity}</div>
+          <div class="">Ship to: username</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Product Name${i.name}</h5>
+        <p class="card-text">
+          ${i.description}
+        </p>
+        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+
+      </div>
+    </div>
+          `);
+        });
+      }
+    </script>
 
     <script>
       $(document).ready(function(){
