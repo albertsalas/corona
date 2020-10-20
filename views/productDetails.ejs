@@ -47,16 +47,13 @@
     <script>
         $(document).ready(function(){
             // getting data from db
-            let product = {
+            var currentQuantity = parseInt($("#qty").val());
+            var product = {
                 name: "<%=item[0].name%>",
                 description: "<%=item[0].description%>",
-                price: "<%=item[0].price%>",
-                quantity: "<%=item[0].quantity%>"
+                price: parseInt('<%=item[0].price%>'),
+                quantity: currentQuantity
             };
-            // getting number of items
-            var quantity = $("#qty").val();
-            quantity = parseInt(quantity);
-            
             // calculating end total based on price and quantity 
             function calcPrice(p, q) {
                 return p * q;
@@ -71,74 +68,92 @@
                     contentType: "json",
                     data: "",
                     success: function () {
-                        quantity = $("#qty").val();
-                        quantity = parseInt(quantity);
-                        var newPrice = calcPrice(product.price, quantity);
+                        currentQuantity = parseInt($("#qty").val());
+                        var newPrice = calcPrice(product.price, currentQuantity);
                         $("#price").html("Price: $" + newPrice);
-                        console.log(newPrice);
-                        console.log(quantity);
+                        // console.log(newPrice);
+                        // console.log(currentQuantity);
+                        product.quantity = currentQuantity;
                     },
                     error: function (request, error) {
                         alert("Request: " + JSON.stringify(error));
                     }
-                });
+                });                
             });
             // click 'add to cart' button
             $("#addToCart").on('click', function(){
-                console.log("Add to cart");
-                quantity = parseInt(quantity);
-                console.log(quantity);
+                // console.log("Add to cart");
+                // console.log(product)
                 // overall items in cart
-                let numItems = localStorage.getItem('items');
-                numItems = parseInt(numItems);
-                console.log(numItems);
+                // let numItems = localStorage.getItem('items');
+                // numItems = parseInt(numItems);
+                // console.log(numItems);
                 // if number > 0
-                if( numItems ){
+                // if( numItems ){
                     // increase total by current quantity
-                    let addUp = parseInt(parseInt(numItems) + parseInt(quantity));
-                    localStorage.setItem('items', addUp);
-                } else {
-                    localStorage.setItem('items', quantity);
-                }
-
+                    // let addUp = parseInt(parseInt(numItems) + parseInt(quantity));
+                    // localStorage.setItem('items', addUp);
+                // } else {
+                    // localStorage.setItem('items', quantity);
+                // }
                 $("#successAlert").show();
                 // quantity of single item
                 setItems(product);
-
+              
             });
-
             function setItems(product){
-                let cartItems = localStorage.getItem('productsInCart');
-                cartItems = JSON.parse(cartItems);
-
-                quantity = parseInt(quantity);
-
-                console.log(cartItems);
-                console.log(product);
-                console.log(quantity);
-                // if cart has things in it
-                if(cartItems != null){
-                    // adding new item to cart if cart is not empty
-                    if(cartItems[product.name] == undefined){
-                        cartItems = {
-                            ...cartItems,
-                            [product.name]: product
-                        };
-                    }
-                    let cartItemsQuantity = parseInt(cartItems[product.name].quantity)
-                    cartItemsQuantity += parseInt(quantity);
-                    cartItems[product.name].quantity = parseInt(cartItemsQuantity);
-                } else { // if cart is empty, add first item
-                    product.quantity = quantity;
-                    cartItems = {
-                        [product.name]: product
-                    };
+                let cartItems = [];
+                cartItems = JSON.parse(localStorage.getItem('productsInCart'));
+                if(cartItems == null){
+                    cartItems = [];
                 }
-
-                console.log(cartItems[product.name].quantity);
-                
+                var a = 0;
+                // cartItems = JSON.parse(cartItems);
+                 //console.log(cartItems)
+                 //console.log(Array.isArray(cartItems))
+                // console.log(cartItems.length)
+                // if cart has things in it
+                if(cartItems.length != 0){
+                    
+                    let i;
+                    var t = false;
+                    for(i = 0; i<cartItems.length;i++){
+                        if(cartItems[i].name == product.name){
+                            cartItems[i].quantity += product.quantity;
+                            t = true;
+                            break;
+                        }
+                    }
+                    if(t != true){
+                        cartItems.push(product);
+                    }
+                                    
+                    // cartItems.forEach(function(i){
+                    //     // console.log(i.name == product.name)
+                    //     if(!tempItems.includes(product.name) && tempItems.length == 0){
+                    //         tempItems.push(product.name);
+                    //     }
+                    //     // if(i.name == product.name){
+                    //     //     i.quantity += product.quantity;
+                            
+                    //     // }else{
+                    //     //     return;
+                    //     // }
+                    // });
+                    // if(!tempItems.includes(product.name)){
+                    //     cartItems.push(product);
+                    // }else{
+                    //     cartItems.forEach(function(i){
+                    //         i.quantity += product.quantity;
+                    //     });
+                    // }
                 localStorage.setItem("productsInCart", JSON.stringify(cartItems));
-
+                }else { // if cart is empty, add first item
+                    cartItems.push(product);
+                    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+                }
+         
+                
             }
         });
     </script>
