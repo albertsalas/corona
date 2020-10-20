@@ -24,12 +24,13 @@ exports.create = (req, res) => {
 
     User.create(user, (err, data) => {
         if (err) {
-            res.status(500).send({
-                message: err.message || "Error while creating user."
-            });
+            res.render('register', {err: true});
+            // res.status(500).send({
+            //     message: err.message || "Error while creating user."
+            // });
         } else {
             // res.send(data);
-            res.render('login');
+            res.redirect('login');
         }
     });
 };
@@ -43,10 +44,10 @@ exports.create = (req, res) => {
 exports.find = (req, res) => {
     User.find(req.params.username, (err, data) => {
         if (err) {
-            res.status(404).send({message: `No user found with username ${req.params.name}.`});
+            res.status(404).send({message: `No user found with username ${req.params.username}.`});
         } else {
             console.log(data);
-            res.send(data);
+            res.render('user', {user: data});
         }
     });
 };

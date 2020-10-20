@@ -14,6 +14,10 @@
             <h3> SIGN UP </h3>
             <a class='btn btn-primary' href='/'>Home</a>
         </div>
+
+        <%if(err){%>
+            <h6 style='color: red;'> User Already exists!! </h6>
+        <%}%>
         
         <form action='users' method='POST'>
             <div class='form-group row'>

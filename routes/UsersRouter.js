@@ -6,7 +6,7 @@ const users = require("../controllers/UsersController.js");
 
 router.post('/', users.create);
 
-router.get('/:username', users.find);
+router.get('/user/:username', users.find);
 
 router.put('/:username', users.update);
 
