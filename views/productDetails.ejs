@@ -11,12 +11,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
   </head>
 <body class="bg-light">
     <!--Navigation bar (log in, sign up, log out, search)-->
     <%- include('./partials/nav.ejs') %>
+    <script src="/javascripts/search.js"></script>
 
-    <div class = "row">
+    <div class = "row no-gutters">
         <div class="col text-center">
 			<!-- name -->
 			<h3><%=item[0].name%></h3>  
@@ -27,17 +29,18 @@
         <div class="col">
 			</br></br>
 			<!-- description -->
-			<p> <%=item[0].description%> </p>
+            <p style="padding-left: 1em; margin-top: 1em;"> <%=item[0].description%> </p>
+            <p style="padding-left: 1em;;">In-Stock:<%=item[0].quantity%> </p>
 			<!-- price -->  
-            <div id = "price" data-price = "<%=item[0].price%>">
+            <div style="padding-left: 1em;" id = "price" data-price = "<%=item[0].price%>">
                 <p>Price: $<%=item[0].price%></p>
 			</div>
 			<!-- quantity -->
-            <div class="input-group">
+            <div class="input-group" style="padding-left: 1em;">
                 <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="50">
                 <button id = "addToCart">Add To Cart</button>
             </div>  
-            <div id = "successAlert" class="alert alert-success" role="alert" style = "display: none;">
+            <div id = "successAlert" class="alert alert-success" role="alert" style = "display: none; padding-left: 1em;">
                 Added to Cart!
             </div>
         </div>
@@ -71,8 +74,6 @@
                         currentQuantity = parseInt($("#qty").val());
                         var newPrice = calcPrice(product.price, currentQuantity);
                         $("#price").html("Price: $" + newPrice);
-                        // console.log(newPrice);
-                        // console.log(currentQuantity);
                         product.quantity = currentQuantity;
                     },
                     error: function (request, error) {
@@ -82,24 +83,8 @@
             });
             // click 'add to cart' button
             $("#addToCart").on('click', function(){
-                // console.log("Add to cart");
-                // console.log(product)
-                // overall items in cart
-                // let numItems = localStorage.getItem('items');
-                // numItems = parseInt(numItems);
-                // console.log(numItems);
-                // if number > 0
-                // if( numItems ){
-                    // increase total by current quantity
-                    // let addUp = parseInt(parseInt(numItems) + parseInt(quantity));
-                    // localStorage.setItem('items', addUp);
-                // } else {
-                    // localStorage.setItem('items', quantity);
-                // }
                 $("#successAlert").show();
-                // quantity of single item
-                setItems(product);
-              
+                setItems(product);     
             });
             function setItems(product){
                 let cartItems = [];
@@ -108,13 +93,8 @@
                     cartItems = [];
                 }
                 var a = 0;
-                // cartItems = JSON.parse(cartItems);
-                 //console.log(cartItems)
-                 //console.log(Array.isArray(cartItems))
-                // console.log(cartItems.length)
                 // if cart has things in it
                 if(cartItems.length != 0){
-                    
                     let i;
                     var t = false;
                     for(i = 0; i<cartItems.length;i++){
@@ -127,33 +107,12 @@
                     if(t != true){
                         cartItems.push(product);
                     }
-                                    
-                    // cartItems.forEach(function(i){
-                    //     // console.log(i.name == product.name)
-                    //     if(!tempItems.includes(product.name) && tempItems.length == 0){
-                    //         tempItems.push(product.name);
-                    //     }
-                    //     // if(i.name == product.name){
-                    //     //     i.quantity += product.quantity;
-                            
-                    //     // }else{
-                    //     //     return;
-                    //     // }
-                    // });
-                    // if(!tempItems.includes(product.name)){
-                    //     cartItems.push(product);
-                    // }else{
-                    //     cartItems.forEach(function(i){
-                    //         i.quantity += product.quantity;
-                    //     });
-                    // }
-                localStorage.setItem("productsInCart", JSON.stringify(cartItems));
-                }else { // if cart is empty, add first item
+                    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+                }
+                else{ // if cart is empty, add first item
                     cartItems.push(product);
                     localStorage.setItem("productsInCart", JSON.stringify(cartItems));
                 }
-         
-                
             }
         });
     </script>

@@ -6,68 +6,84 @@
     <title>Shopping Cart</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css"/>
+    <%- include('./partials/scripts.ejs') %>
 
 </head>
 <body class="bg-light">
 
   <%- include('./partials/nav.ejs') %>
-
-    <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
-      <div class="card-header">
-        <div class="d-flex justify-content-between">
-          <div class="">Product Ordered: </div>
-          <div class="">Total Price: </div>
-          <div class="">Ship to: username</div>
-        </div>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Product Name</h5>
-        <p class="card-text">
-          Description of product maybe
-        </p>
-        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-
-      </div>
-    </div>
-
+  <script src="/javascripts/search.js"></script>
     <div id="items">
 
     </div>
+   
 
-    <!-- <hr style="color: gray; height: 1px; background-color: gray;">
-  -->
-
-    <%- include('./partials/footer.ejs') %>
+    <div id="partial"></div>
 
     <script>
+    // $(function() {
+    
       var items = [];
       items = JSON.parse(localStorage.getItem('productsInCart'));
+
+      //first time the page loads
       $("#items").html("");
       if(items != null){
+          appendItems(items);
+      }
+      else{
+        $('#items').append(`<div><h2>THERE ARE CURRENTLY NO ITEMS IN YOUR CART</2><div>`);
+      }
+      
+      //when the user removes an item 
+      $("#items").on('click', ".remove", function(){
+        if($(this).val() >= 0 && $(this).val() != ""){
+          //splicing does the deletion for us
+          items.splice($(this).val(),1);
+          //if there are items in the cart after deletion, reappend the new data
+          if(items.length > 0){
+            localStorage.setItem("productsInCart", JSON.stringify(items));
+            items = JSON.parse(localStorage.getItem('productsInCart'));
+            $("#items").html("");
+            appendItems(items);
+          }//else append the message saying there are no more items and set localstorage to null
+          else{
+            $("#items").html("");
+            $('#items').append(`<div><h2>THERE ARE CURRENTLY NO ITEMS IN YOUR CART</h2><div>`);
+            localStorage.setItem("productsInCart", null);
+          }
+        }
+      });
+
+      //function used to append items on start and when deleting an item
+      function appendItems(items){
+        //count is used to assign the value of the button equal to the index of the localstorage array 
+        //also used to change the values when something is deleted
+        let count = 0;
         items.forEach(function(i){
           $('#items').append(`
-          <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
-      <div class="card-header">
-        <div class="d-flex justify-content-between">
-          <div class="">Product Ordered: ${i.name}</div>
-          <div class="">Total Price: ${i.price * i.quantity}</div>
-          <div class="">Ship to: username</div>
-        </div>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Product Name${i.name}</h5>
-        <p class="card-text">
-          ${i.description}
-        </p>
-        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-      </div>
-    </div>
-          `);
-        });
+            <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
+              <div class="card-header">
+                <div class="d-flex justify-content-between">
+                  <div class="">Ordered: ${i.quantity} @ $${i.price}</div>
+                  <div class="">Total Price: $${i.price * i.quantity}</div>
+                  <div class="">Ship to: username</div>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">${i.name}</h5>
+                <p class="card-text">${i.description}</p>
+                <button type="button" class="btn btn-danger btn-sm remove" value=${count}>Remove</button>
+              </div>
+            </div>`);
+            count++;
+          });
       }
+    // });
+    $('#partial').html('');
+    $('#partial').append(`<%- include('./partials/footer.ejs') %>`);
     </script>
-
     <script>
       $(document).ready(function(){
         
@@ -94,6 +110,6 @@
         //displayItems();
       });
     </script>
-
+  
 </body>
 </html>
