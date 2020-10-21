@@ -6,6 +6,8 @@ const users = require("../controllers/UsersController.js");
 
 router.post('/', users.create);
 
+router.post('/login', users.compare);
+
 router.get('/user/:username', users.find);
 
 router.put('/:username', users.update);

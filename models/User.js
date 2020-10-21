@@ -87,4 +87,27 @@ User.delete = (username, result) => {
     );
 };
 
+/**
+ * Query to compare input data with username in database
+ * @param username - the user's username
+ * @param password - the user's password
+ * @param result - the result of the query
+ */
+User.compare = (username, password, result) => {
+    connection.query("SELECT * FROM User WHERE username = ?", username, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        if (password == res.password){
+            result(null, res);
+            return;
+        } else {
+            result(err, null);
+            return;
+        }
+    });
+};
+
 module.exports = User;
