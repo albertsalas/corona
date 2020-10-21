@@ -36,7 +36,7 @@ exports.edit = (req, res) => {
             res.status(500).send({message: err.message || "An error occurred when retrieving products."});
         } else {
             console.log(data);
-            res.render('EditProducts', {data: data});
+            res.render('EditProducts', {title: "Edit Products", data: data});
         }
     });
 };
