@@ -101,4 +101,20 @@ Product.delete = (name, result) => {
     );
 };
 
+
+Product.updateQuantity = (productName, quantityToBeRemoved, result) => {
+    connection.query("UPDATE Product SET quantity = quantity - ? WHERE name = ?;", [quantityToBeRemoved, productName],
+        (err, res) => {
+            if (err) {
+                result(null, err);
+            } else if (res.affectedRows === 0) {
+                result({kind: "not_found"}, null);
+            } else {
+                console.log(res);
+                result(null, {name: productName})
+            }
+        }
+    );
+};
+
 module.exports = Product;
