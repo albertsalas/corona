@@ -25,6 +25,12 @@ $("#search").on("change", function(){
       contentType: "json",
       data: "",
       success: function(result){
+        // console.log(result)
+        var a = result;
+        // console.log(a.item[0].name);
+        // console.log(window.location.origin);
+        let newURL = window.location.origin+"/products/"+a.item[0].name;
+        window.location = newURL;
         console.log("search successful");
       }
     })

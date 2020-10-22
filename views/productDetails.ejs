@@ -6,13 +6,15 @@
     <title>Product Details Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    
-</head>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <%- include('./partials/scripts.ejs') %>
+  </head>
 <body class="bg-light">
     <!--Navigation bar (log in, sign up, log out, search)-->
     <%- include('./partials/nav2.ejs') %>
+    <script src="/javascripts/search.js"></script>
 
-    <div class = "row">
+    <div class = "row no-gutters">
         <div class="col text-center">
 			<!-- name -->
 			<h3><%=item[0].name%></h3>  
@@ -23,17 +25,18 @@
         <div class="col">
 			</br></br>
 			<!-- description -->
-			<p> <%=item[0].description%> </p>
+            <p style="padding-left: 1em; margin-top: 1em;"> <%=item[0].description%> </p>
+            <p style="padding-left: 1em;;">In-Stock:<%=item[0].quantity%> </p>
 			<!-- price -->  
-            <div id = "price" data-price = "<%=item[0].price%>">
+            <div style="padding-left: 1em;" id = "price" data-price = "<%=item[0].price%>">
                 <p>Price: $<%=item[0].price%></p>
 			</div>
 			<!-- quantity -->
-            <div class="input-group">
+            <div class="input-group" style="padding-left: 1em;">
                 <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="50">
                 <button id = "addToCart">Add To Cart</button>
             </div>  
-            <div id = "successAlert" class="alert alert-success" role="alert" style = "display: none;">
+            <div id = "successAlert" class="alert alert-success" role="alert" style = "display: none; padding-left: 1em;">
                 Added to Cart!
             </div>
         </div>
@@ -42,21 +45,19 @@
 
     <script>
         $(document).ready(function(){
-
-            let product = {
+            // getting data from db
+            var currentQuantity = parseInt($("#qty").val());
+            var product = {
                 name: "<%=item[0].name%>",
                 description: "<%=item[0].description%>",
-                price: "<%=item[0].price%>",
-                quantity: "<%=item[0].quantity%>"
+                price: parseInt('<%=item[0].price%>'),
+                quantity: currentQuantity
             };
-            
-            var quantity = $("#qty").val();
-            quantity = parseInt(quantity);
-            
+            // calculating end total based on price and quantity 
             function calcPrice(p, q) {
                 return p * q;
             }
-// change quantity
+            // change quantity
             $("#qty").change(function(event){
                 event.preventDefault();
                 // alert($("#qty").val());
@@ -66,64 +67,50 @@
                     contentType: "json",
                     data: "",
                     success: function () {
-                        quantity = $("#qty").val();
-                        quantity = parseInt(quantity);
-                        var newPrice = calcPrice(product.price, quantity);
+                        currentQuantity = parseInt($("#qty").val());
+                        var newPrice = calcPrice(product.price, currentQuantity);
                         $("#price").html("Price: $" + newPrice);
-                        console.log(newPrice);
+                        product.quantity = currentQuantity;
                     },
                     error: function (request, error) {
                         alert("Request: " + JSON.stringify(error));
                     }
-                });
+                });                
             });
-// click 'add to cart' button
+            // click 'add to cart' button
             $("#addToCart").on('click', function(){
-                console.log("Add to cart");
-                quantity = parseInt(quantity);
-// overall items in cart
-                let numItems = localStorage.getItem('items');
-                numItems = parseInt(numItems);
-
-                if( numItems ){
-                    localStorage.setItem('items', numItems + quantity);
-                } else {
-                    localStorage.setItem('items', quantity);
-                }
-
                 $("#successAlert").show();
-// quantity of single item
-                setItems(product);
-
+                setItems(product);     
             });
 
             function setItems(product){
-                let cartItems = localStorage.getItem('productsInCart');
-                cartItems = JSON.parse(cartItems);
-                quantity = parseInt(quantity);
-                // if cart has things in it
-                if(cartItems != null){
-                    // adding new item to cart if cart is not empty
-                    if(cartItems[product.name] == undefined){
-                        cartItems = {
-                            ...cartItems,
-                            [product.name]: product
-                        };
-                    }
-                    let cartItemsQuantity = parseInt(cartItems[product.name].quantity)
-                    cartItemsQuantity += parseInt(quantity);
-                    cartItems[product.name].quantity = parseInt(cartItemsQuantity);
-                } else { // if cart is empty, add first item
-                    product.quantity = quantity;
-                    cartItems = {
-                        [product.name]: product
-                    };
+                let cartItems = [];
+                cartItems = JSON.parse(localStorage.getItem('productsInCart'));
+
+                if(cartItems == null){
+                    cartItems = [];
                 }
-
-                console.log(cartItems[product.name].quantity);
-                
-                localStorage.setItem("productsInCart", JSON.stringify(cartItems));
-
+                var a = 0;
+                // if cart has things in it
+                if(cartItems.length != 0){
+                    let i;
+                    var t = false;
+                    for(i = 0; i<cartItems.length;i++){
+                        if(cartItems[i].name == product.name){
+                            cartItems[i].quantity += product.quantity;
+                            t = true;
+                            break;
+                        }
+                    }
+                    if(t != true){
+                        cartItems.push(product);
+                    }
+                    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+                }
+                else{ // if cart is empty, add first item
+                    cartItems.push(product);
+                    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+                }
             }
         });
     </script>
