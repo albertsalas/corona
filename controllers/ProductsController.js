@@ -126,6 +126,7 @@ exports.delete = (req, res) => {
  */
 exports.updateQuantity = (req, res) => {
     Product.updateQuantity(req.body.productName, req.body.quantityToBeRemoved, (err) => {
+        // console.log(req.body)
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({message: `No product found with name ${req.body.productName}.`});
