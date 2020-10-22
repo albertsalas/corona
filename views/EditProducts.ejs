@@ -96,6 +96,7 @@
             name = getDataAttribute("name", this);
             deleteProduct(name);
         });
+        
         $(document).on('click', '.editButton', function () {
             editing = true;
             name = getDataAttribute("name", this);
@@ -108,6 +109,7 @@
             document.getElementById("quantity").value = getDataAttribute("quantity", quantityElement);
             $("#productModal").modal();
         });
+
         $(document).on('click', '#addNewProductButton', function () {
             editing = false;
             $("#productModal").modal('toggle');
@@ -116,6 +118,7 @@
             document.getElementById("price").value = "";
             document.getElementById("quantity").value = "";
         });
+
         $(document).on('click', '#saveButton', function () {
             let productHash = {};
             productHash['name'] = document.getElementById("name").value;
@@ -134,12 +137,15 @@
                 addProduct(productHash);
             }
         });
+
         function reloadTable() {
             $('#products').load(document.URL + ' #products');
         }
+
         function getDataAttribute(type, element) {
             return element.getAttribute("data-" + type);
         }
+
         function addProduct(productHash) {
             $.ajax({
                 url: "/products",
@@ -159,6 +165,7 @@
                 }
             });
         }
+
         function editProduct(productName, productHash) {
             $.ajax({
                 url: "/products/" + productName,
@@ -178,6 +185,7 @@
                 }
             });
         }
+
         function deleteProduct(productName) {
             $.ajax({
                 url: "/products/" + productName,
