@@ -87,28 +87,29 @@
       $("#checkoutButton").on('click', function(){
         console.log('clicked checkout');
         var totalPrice = 0;
-        var test;
         items.forEach(function(i){
-          test = i;
-          totalPrice+=i.price*i.quantity;
+          updateItem(i.name, i.quantity);
+          // totalPrice+=i.price*i.quantity;
         });
-        console.log(test.quantity);
-        console.log(test.name);
-        let u = window.location.origin + '/products';
-        $.ajax({
-                    url: "/products/",
-                    type: "PATCH",
-                    contentType: "json",
-                    data: 
-                    {
-                      productName: test.name,
-                      quantityToBeRemoved: test.quantity
-                    },
-                    success: function (data) {
-                      console.log(data)
-                    },
-                });               
+        
+           
       });
+      function updateItem(n, q){
+        console.log(n);
+        let updatedItem = 
+        {
+          productName: n,
+          quantityToBeRemoved: q
+        }
+        $.ajax({
+                  url: "/products/",
+                  type: "PATCH",
+                  contentType: "application/json",
+                  data: JSON.stringify(updatedItem),
+                  success: function (data) {
+                  },
+              });           
+      }
     $('#partial').html('');
     $('#partial').append(`<%- include('./partials/footer.ejs') %>`);
     </script>

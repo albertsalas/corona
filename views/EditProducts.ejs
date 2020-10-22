@@ -6,11 +6,12 @@
     <title>Product Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <%- include('./partials/scripts.ejs') %>
 
 </head>
 <body class="bg-light">
 <%- include('./partials/nav.ejs') %>
-<!-- <script src="/javascripts/search.js"></script> -->
+<script src="/javascripts/search.js"></script>
 
 <div class="container">
     <div id="products" class="d-flex p-2 justify-content-center row">
@@ -95,7 +96,6 @@
             name = getDataAttribute("name", this);
             deleteProduct(name);
         });
-
         $(document).on('click', '.editButton', function () {
             editing = true;
             name = getDataAttribute("name", this);
@@ -108,7 +108,6 @@
             document.getElementById("quantity").value = getDataAttribute("quantity", quantityElement);
             $("#productModal").modal();
         });
-
         $(document).on('click', '#addNewProductButton', function () {
             editing = false;
             $("#productModal").modal('toggle');
@@ -117,14 +116,12 @@
             document.getElementById("price").value = "";
             document.getElementById("quantity").value = "";
         });
-
         $(document).on('click', '#saveButton', function () {
             let productHash = {};
             productHash['name'] = document.getElementById("name").value;
             productHash['description'] = document.getElementById("description").value;
             productHash['price'] = document.getElementById("price").value;
             productHash['quantity'] = document.getElementById("quantity").value;
-
             for (let key in productHash) {
                 if (productHash[key] === "" || !productHash[key]) {
                     alert("ALL FIELDS MUST BE FILLED!");
@@ -137,15 +134,12 @@
                 addProduct(productHash);
             }
         });
-
         function reloadTable() {
             $('#products').load(document.URL + ' #products');
         }
-
         function getDataAttribute(type, element) {
             return element.getAttribute("data-" + type);
         }
-
         function addProduct(productHash) {
             $.ajax({
                 url: "/products",
@@ -165,7 +159,6 @@
                 }
             });
         }
-
         function editProduct(productName, productHash) {
             $.ajax({
                 url: "/products/" + productName,
@@ -185,7 +178,6 @@
                 }
             });
         }
-
         function deleteProduct(productName) {
             $.ajax({
                 url: "/products/" + productName,
