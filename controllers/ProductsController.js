@@ -36,7 +36,7 @@ exports.edit = (req, res) => {
             res.status(500).send({message: err.message || "An error occurred when retrieving products."});
         } else {
             console.log(data);
-            res.render('EditProducts', {data: data});
+            res.render('EditProducts', {title: "Edit Products", data: data});
         }
     });
 };
@@ -117,3 +117,24 @@ exports.delete = (req, res) => {
         }
     });
 };
+
+/**
+ * Update a product's quantity. To be used by the shopping cart after a user checks out, then send how much the user
+ * purchased. If the product isn't found then it'll return 404.
+ * @param req
+ * @param res
+ */
+exports.updateQuantity = (req, res) => {
+    Product.updateQuantity(req.body.productName, req.body.quantityToBeRemoved, (err) => {
+        // console.log(req.body)
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({message: `No product found with name ${req.body.productName}.`});
+            } else {
+                res.send(err);
+            }
+        } else {
+            res.status(200).send({message: "Product quantity updated successfully."});
+        }
+    })
+}

@@ -27,11 +27,14 @@ $("#search").on("change", function(){
       success: function(result){
         // console.log(result)
         var a = result;
-        // console.log(a.item[0].name);
+        if(a.item[0] == undefined)
+          window.location = window.location.origin+"/error";
+        else{
+          let newURL = window.location.origin+"/products/"+a.item[0].name;
+          window.location = newURL;
+          console.log("search successful");
+        }
         // console.log(window.location.origin);
-        let newURL = window.location.origin+"/products/"+a.item[0].name;
-        window.location = newURL;
-        console.log("search successful");
       }
     })
   }

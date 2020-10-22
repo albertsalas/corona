@@ -14,4 +14,6 @@ router.put('/:name', products.update);
 
 router.delete('/:name', products.delete);
 
+router.patch('/', products.updateQuantity);
+
 module.exports = router;

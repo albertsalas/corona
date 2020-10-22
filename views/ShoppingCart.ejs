@@ -26,11 +26,14 @@
         <a id = "checkout">Want to Checkout?</a>
       </div>
     </div>
-    
+
+    <div id="checkout" style="text-align: center; margin-bottom: 1em;">
+    </div>
+   
+
     <div id="partial"></div>
 
     <script>
-    // $(function() {
     
       var items = [];
       items = JSON.parse(localStorage.getItem('productsInCart'));
@@ -39,7 +42,7 @@
       $("#items").html("");
       if(items != null){
           appendItems(items);
-          calcTotal(items);
+          $("#checkout").append(`<button class="btn btn-info" id="checkoutButton">Checkout</button`)
       }
       else{
         $('#items').append(`<div><h2>THERE ARE CURRENTLY NO ITEMS IN YOUR CART</2><div>`);
@@ -61,6 +64,7 @@
             $("#items").html("");
             $('#items').append(`<div><h2>THERE ARE CURRENTLY NO ITEMS IN YOUR CART</h2><div>`);
             localStorage.setItem("productsInCart", null);
+            $("#checkout").html("");
           }
         }
       });
@@ -89,14 +93,32 @@
             count++;
           });
       }
-      function calcTotal(items){
-        let total = 0;
+      $("#checkoutButton").on('click', function(){
+        console.log('clicked checkout');
+        var totalPrice = 0;
         items.forEach(function(i){
-          total += i.price * i.quantity;
+          updateItem(i.name, i.quantity);
+          // totalPrice+=i.price*i.quantity;
         });
-        $("#total").html("$" + total);
+        
+           
+      });
+      function updateItem(n, q){
+        console.log(n);
+        let updatedItem = 
+        {
+          productName: n,
+          quantityToBeRemoved: q
+        }
+        $.ajax({
+                  url: "/products/",
+                  type: "PATCH",
+                  contentType: "application/json",
+                  data: JSON.stringify(updatedItem),
+                  success: function (data) {
+                  },
+              });           
       }
-    // });
     $('#partial').html('');
     $('#partial').append(`<%- include('./partials/footer.ejs') %>`);
     </script>

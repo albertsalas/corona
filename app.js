@@ -10,10 +10,12 @@ dotenv.config();
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/UsersRouter');
 const productsRouter = require('./routes/ProductsRouter');
+const ordersRouter = require('./routes/OrdersRouter');
 const productDetailsRouter = require('./routes/productDetails');
 const shoppingCartRouter = require('./routes/shoppingcart');
 const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
+const errorRouter = require('./routes/error');
 const app = express();
 
 // view engine setup
@@ -31,10 +33,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
+app.use('/orders', ordersRouter);
 app.use('/productDetails', productDetailsRouter);
 app.use('/shoppingcart', shoppingCartRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
+app.use('/error', errorRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -51,7 +55,5 @@ app.use(function (err, req, res) {
     res.status(err.status || 500);
     res.render('error');
 });
-
-
 
 module.exports = app;
