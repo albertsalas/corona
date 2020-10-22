@@ -94,22 +94,19 @@
         });
         console.log(test.quantity);
         console.log(test.name);
-        let data = 
-        {
-          "quantity": test.quantity,
-        }
+        let u = window.location.origin + '/products';
         $.ajax({
-                    url: "/ShoppingCart/"+test.name,
+                    url: "/products/",
                     type: "PATCH",
                     contentType: "json",
-                    // processData: false,
-                    data: data,
+                    data: 
+                    {
+                      productName: test.name,
+                      quantityToBeRemoved: test.quantity
+                    },
                     success: function (data) {
                       console.log(data)
                     },
-                    // error: function (request, error) {
-                    //     alert("Request: " + JSON.stringify(error));
-                    // }
                 });               
       });
     $('#partial').html('');
