@@ -44,10 +44,11 @@ exports.create = (req, res) => {
 exports.find = (req, res) => {
     User.find(req.params.username, (err, data) => {
         if (err) {
-            res.status(404).send({message: `No user found with username ${req.params.username}.`});
+            throw err;
+            // res.status(404).send({message: `No user found with username ${req.params.username}.`});
         } else {
             console.log(data);
-            res.render('user', {user: data});
+            res.render('user', {user: data[0]});
         }
     });
 };
@@ -92,3 +93,22 @@ exports.delete = (req, res) => {
         }
     });
 };
+
+// /**
+//  * Compare a single user using a username
+//  *
+//  * @param req - request
+//  * @param res - response
+//  */
+// exports.compare = (req, res) => {
+//     let username = req.params.username;
+//     let password = req.params.password;
+//     User.compare(username, password, (err, data) => {
+//         if (err) {
+//             res.render('login', {error: true, user: username});
+//             // res.status(404).send({message: `No user found with username ${req.params.username}.`});
+//         } else {
+//             res.redirect('Dashboard', {username: data.username});
+//         }
+//     });
+// };

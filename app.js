@@ -56,9 +56,4 @@ app.use(function (err, req, res) {
     res.render('error');
 });
 
-app.get('/logout', function(req, res){
-    req.logout();
-    res.redirect('index'); 
- });
-
 module.exports = app;
