@@ -22,8 +22,9 @@
         <div class="col text-center">
 			<!-- name -->
 			<h3><%=item[0].name%></h3>  
-			<!-- Image -->
-            <img src="/img/beer_test_img.jpg" class="img-fluid" alt="Responsive image">
+            <!-- Image -->
+            <!-- <img src="/img/beer_test_img.jpg"> -->
+            <img src="<%= item[0].img %>"  id = "beerPhoto" class="img-fluid" alt="Responsive image">
         </div>
     
         <div class="col">
@@ -55,7 +56,8 @@
                 name: "<%=item[0].name%>",
                 description: "<%=item[0].description%>",
                 price: parseInt('<%=item[0].price%>'),
-                quantity: currentQuantity
+                quantity: currentQuantity,
+                img: "<%=item[0].img%>"
             };
             // calculating end total based on price and quantity 
             function calcPrice(p, q) {
