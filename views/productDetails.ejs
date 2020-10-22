@@ -31,18 +31,21 @@
 			</br></br>
 			<!-- description -->
             <p style="padding-left: 1em; margin-top: 1em;"> <%=item[0].description%> </p>
-            <p style="padding-left: 1em;;">In-Stock:<%=item[0].quantity%> </p>
+            <p style="padding-left: 1em;;" id = "inStock">In-Stock:<%=item[0].quantity%> </p>
 			<!-- price -->  
             <div style="padding-left: 1em;" id = "price" data-price = "<%=item[0].price%>">
                 <p>Price: $<%=item[0].price%></p>
 			</div>
 			<!-- quantity -->
             <div class="input-group" style="padding-left: 1em;">
-                <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="50">
+                <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="<%=item[0].quantity%>">
                 <button id = "addToCart">Add To Cart</button>
             </div>  
             <div id = "successAlert" class="alert alert-success" role="alert" style = "display: none; padding-left: 1em;">
                 Added to Cart!
+            </div>
+            <div id = "failAlert" class="alert alert-danger" role="alert" style = "display: none; padding-left: 1em;">
+                Failed to add to Cart!
             </div>
         </div>
     </div>
@@ -52,6 +55,7 @@
         $(document).ready(function(){
             // getting data from db
             var currentQuantity = parseInt($("#qty").val());
+            var fixedQuantity = "<%=item[0].quantity%>";
             var product = {
                 name: "<%=item[0].name%>",
                 description: "<%=item[0].description%>",
@@ -59,14 +63,11 @@
                 quantity: currentQuantity,
                 img: "<%=item[0].img%>"
             };
-            // calculating end total based on price and quantity 
-            function calcPrice(p, q) {
-                return p * q;
-            }
+            
             // change quantity
             $("#qty").change(function(event){
                 event.preventDefault();
-                // alert($("#qty").val());
+                console.log($("#qty").val());
                 $.ajax({
                     url: "./<%=item[0].name%>",
                     type: "GET",
@@ -85,9 +86,28 @@
             });
             // click 'add to cart' button
             $("#addToCart").on('click', function(){
-                $("#successAlert").show();
-                setItems(product);     
+                console.log("click");
+                if(checkQty(product)){
+                    $("#successAlert").show();
+                    setItems(product);  
+                }
+                $("#inStock").html("In-Stock: " + fixedQuantity);
             });
+            // calculating end total based on price and quantity 
+            function calcPrice(p, q) {
+                return p * q;
+            }
+            function checkQty(product){
+                console.log(fixedQuantity + " " + $("#qty").val());
+                if($("#qty").val() > fixedQuantity){
+                    $("#successAlert").hide();
+                    $("#failAlert").show();
+                    return false;
+                } else {
+                    fixedQuantity -= $("#qty").val();
+                    return true;
+                }
+            }
             function setItems(product){
                 let cartItems = [];
                 cartItems = JSON.parse(localStorage.getItem('productsInCart'));
