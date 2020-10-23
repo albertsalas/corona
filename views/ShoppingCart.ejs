@@ -74,6 +74,9 @@
         //count is used to assign the value of the button equal to the index of the localstorage array 
         //also used to change the values when something is deleted
         let count = 0;
+        // for(var i of items){
+        //   console.log(i.name);
+        // }
         items.forEach(function(i){
           $('#items').append(`
             <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
@@ -100,8 +103,6 @@
           updateItem(i.name, i.quantity);
           // totalPrice+=i.price*i.quantity;
         });
-        
-           
       });
       function updateItem(n, q){
         console.log(n);
