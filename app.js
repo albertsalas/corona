@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 // setup DB environment variables
 const dotenv = require("dotenv");
+const session = require('express-session');
 dotenv.config();
 
 const indexRouter = require('./routes/index');
@@ -28,7 +29,11 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({
+    secret: 'secret-key',
+    resave: true,
+    saveUninitialized: true,
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

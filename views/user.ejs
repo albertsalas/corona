@@ -1,13 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+  <head>
     <title>Corona</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
-</head>
-<body class="bg-light">
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
+		<link rel='stylesheet' type='text/css' href='css/app.css'>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+
+    <div class='container'>
+        <div class='jumbotron'>
+            <h3> Your User Information </h3>
+            <a class='btn btn-primary' href='/'>Home</a>
+        </div>
+        <div class='row'>
+            <%if(typeof error != 'undefined' && error){%>
+            <h6 style='color: red;'> CANNOT FIND YOUR USER INFORMATION!!! </h6>
+            <%}%>
+            else<%{%>
+                <div class='form-group row'>
+                    <label for='username' class='col-sm-4 col-form-label'>Username</label>
+                    <div class='col-sm-4'>
+                        <%=user.username%>
+                    </div>
+                </div>
+                <div class='form-group row'>
+                    <label for='firstName' class='col-sm-4 col-form-label'>Firstname</label>
+                    <div class='col-sm-4'>
+                        <%=user.firstName%>
+                    </div>
+                </div>
+                <div class='form-group row'>
+                    <label for='lastName' class='col-sm-4 col-form-label'>Lastname</label>
+                    <div class='col-sm-4'>
+                        <%=user.lastName%>
+                    </div>
+                </div>
+                <div class='form-group row'>
+                    <div class='col-sm-4'></div>
+                    <div class='col-sm-2'>
+                        <button class='btn btn-primary btn-block' href='/user/<%=user.username%>/edit'>Edit</button>
+                    </div>
+                    <div class='col-sm-2'>
+                        <button class='btn btn-danger btn-block' href='/dashboard'>Back</button>
+                    </div>
+                    <div class='col-sm-4'></div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Corona</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
+		<link rel='stylesheet' type='text/css' href='css/app.css'>
+  </head>
+  <body>
 
     <div class='container'>
         <div class='jumbotron'>
@@ -40,7 +95,7 @@
                 <div class='form-group row'>
                     <div class='col-sm-4'></div>
                     <div class='col-sm-2'>
-                        <button class='btn btn-success btn-block' href='/user/<%=user.username%>/edit'>Edit</button>
+                        <button class='btn btn-primary btn-block' href='/user/<%=user.username%>/edit'>Edit</button>
                     </div>
                     <div class='col-sm-2'>
                         <button class='btn btn-danger btn-block' href='/dashboard'>Back</button>
@@ -52,4 +107,4 @@
     </div>
 
 </body>
-</html>
+</html> -->
