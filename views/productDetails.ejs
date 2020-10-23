@@ -13,7 +13,7 @@
 <body class="bg-light">
 <!--Navigation bar (log in, sign up, log out, search)-->
 <%- include('./partials/nav.ejs') %>
-<script type="text/javascript" src="../public/javascripts/search.js"></script>
+<script src="/javascripts/search.js"></script>
 
 <div class="row no-gutters">
     <div class="col text-center">
@@ -51,9 +51,9 @@
 <script>
     $(document).ready(function () {
         // getting data from db
-        var currentQuantity = parseInt($("#qty").val());
-        var fixedQuantity = "<%= item[0].quantity %>";
-        var product = {
+        let currentQuantity = parseInt($("#qty").val());
+        let fixedQuantity = "<%= item[0].quantity %>";
+        let product = {
             name: "<%= item[0].name %>",
             description: "<%= item[0].description %>",
             price: parseInt('<%= item[0].price %>'),
@@ -109,12 +109,11 @@
         }
 
         function setItems(product) {
-            let cartItems = [];
-            cartItems = JSON.parse(localStorage.getItem('productsInCart'));
-            if (cartItems == null) {
+            let cartItems = JSON.parse(localStorage.getItem('productsInCart'));
+            if (!cartItems) {
                 cartItems = [];
             }
-            let a = 0;
+
             // if cart has things in it
             if (cartItems.length !== 0) {
                 let i;
