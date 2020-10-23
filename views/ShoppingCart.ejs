@@ -14,8 +14,17 @@
 
   <%- include('./partials/nav.ejs') %>
   <script src="/javascripts/search.js"></script>
-    <div id="items">
-
+    <div id="items"></div>
+    <div class="card mb-3" style="max-width: 40rem; margin: 0 auto;">
+      <div class="card-header bg-info">
+        <div class="d-flex justify-content-between">
+          <div class=""><b>Subtotal: </b></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id = "total"></div>
+        <a id = "checkout">Want to Checkout?</a>
+      </div>
     </div>
 
     <div id="checkout" style="text-align: center; margin-bottom: 1em;">
@@ -112,35 +121,6 @@
       }
     $('#partial').html('');
     $('#partial').append(`<%- include('./partials/footer.ejs') %>`);
-    </script>
-    <script>
-      $(document).ready(function(){
-        
-        // function displayItems(){
-        //   let cartItems = localStorage.getItem('productsInCart');
-        //   cartItems = JSON.stringify(cartItems);
-
-        //   console.log(cartItems);
-
-        //   let productContainer = $(".card-body");
-        //   if(cartItems && productContainer){
-        //       productContainer.html(``);
-        //       Object.values(cartItems).map(item => {
-        //           productContainer.innerHtml += `
-        //           <div class="card-body">
-        //               <h5 class="card-title">${product.name}</h5>
-        //               <p class="card-text">
-        //                   ${product.description}
-        //               </p>
-        //               <button type="button" class="btn btn-danger btn-sm">Delete</button>
-        //           </div>
-        //           `;
-        //       });
-        //     }
-        // }
-
-        //displayItems();
-      });
     </script>
   
 </body>
