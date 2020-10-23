@@ -44,7 +44,6 @@ exports.create = (req, res) => {
 exports.find = (req, res) => {
     User.find(req.params.username, (err, data) => {
         if (err) {
-            throw err;
             res.status(404).send({message: `No user found with username ${req.params.username}.`});
         } else {
             console.log(data);
