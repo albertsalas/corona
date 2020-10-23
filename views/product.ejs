@@ -20,16 +20,17 @@
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
                     <a href="/products/<%= item.name %>">
-                        <img src="/img/beer_test_img.jpg" class="card-img-top" alt="...">
+                        <!-- <img src="/img/beer_test_img.jpg" id = "beerPhoto" class="card-img-top" alt="..."> -->
+                        <img src="<%= item.img %>" id = "beerPhoto" class="card-img-top" alt="...">
                         <div class="card-body">
                             <p class="card-text"></p>
+                            <!-- name -->
+                            <h5><%= item.name %></h5>
                             <div class="d-flex justify-content-between align-items-center">
-                                <!-- name -->
-                                <%= item.name %>
                                 <!-- brand -->
-                                <%= item.description %>
+                                <p><%= item.description %></p>
                                 <!-- price -->
-                                <p> $<%= item.price %> </p>
+                                <p>$<%= item.price %> </p>
                                 <!-- rating -->
                             </div>
                         </div>
@@ -41,6 +42,13 @@
 </div>
 
 <%- include('./partials/footer.ejs') %>
+
+<script>
+    function loadImg(){
+        var img = new Image();
+        img.src = "img\BlackoutBrooks.jpg"
+    }
+</script>
 
 </body>
 </html>

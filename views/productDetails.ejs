@@ -6,8 +6,12 @@
     <title>Product Details Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <%- include('./partials/scripts.ejs') %>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.11.0/underscore-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
   </head>
 <body class="bg-light">
     <!--Navigation bar (log in, sign up, log out, search)-->
@@ -18,26 +22,30 @@
         <div class="col text-center">
 			<!-- name -->
 			<h3><%=item[0].name%></h3>  
-			<!-- Image -->
-            <img src="/img/beer_test_img.jpg" class="img-fluid" alt="Responsive image">
+            <!-- Image -->
+            <!-- <img src="/img/beer_test_img.jpg"> -->
+            <img src="<%= item[0].img %>"  id = "beerPhoto" class="img-fluid" alt="Responsive image">
         </div>
     
         <div class="col">
 			</br></br>
 			<!-- description -->
             <p style="padding-left: 1em; margin-top: 1em;"> <%=item[0].description%> </p>
-            <p style="padding-left: 1em;;">In-Stock:<%=item[0].quantity%> </p>
+            <p style="padding-left: 1em;;" id = "inStock">In-Stock:<%=item[0].quantity%> </p>
 			<!-- price -->  
             <div style="padding-left: 1em;" id = "price" data-price = "<%=item[0].price%>">
                 <p>Price: $<%=item[0].price%></p>
 			</div>
 			<!-- quantity -->
             <div class="input-group" style="padding-left: 1em;">
-                <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="50">
+                <input type="number" id = "qty" name="quant[1]" value="1" min="1" max="<%=item[0].quantity%>">
                 <button id = "addToCart">Add To Cart</button>
             </div>  
             <div id = "successAlert" class="alert alert-success" role="alert" style = "display: none; padding-left: 1em;">
                 Added to Cart!
+            </div>
+            <div id = "failAlert" class="alert alert-danger" role="alert" style = "display: none; padding-left: 1em;">
+                Failed to add to Cart!
             </div>
         </div>
     </div>
@@ -47,20 +55,19 @@
         $(document).ready(function(){
             // getting data from db
             var currentQuantity = parseInt($("#qty").val());
+            var fixedQuantity = "<%=item[0].quantity%>";
             var product = {
                 name: "<%=item[0].name%>",
                 description: "<%=item[0].description%>",
                 price: parseInt('<%=item[0].price%>'),
-                quantity: currentQuantity
+                quantity: currentQuantity,
+                img: "<%=item[0].img%>"
             };
-            // calculating end total based on price and quantity 
-            function calcPrice(p, q) {
-                return p * q;
-            }
+            
             // change quantity
             $("#qty").change(function(event){
                 event.preventDefault();
-                // alert($("#qty").val());
+                console.log($("#qty").val());
                 $.ajax({
                     url: "./<%=item[0].name%>",
                     type: "GET",
@@ -79,14 +86,31 @@
             });
             // click 'add to cart' button
             $("#addToCart").on('click', function(){
-                $("#successAlert").show();
-                setItems(product);     
+                console.log("click");
+                if(checkQty(product)){
+                    $("#successAlert").show();
+                    setItems(product);  
+                }
+                $("#inStock").html("In-Stock: " + fixedQuantity);
             });
-
+            // calculating end total based on price and quantity 
+            function calcPrice(p, q) {
+                return p * q;
+            }
+            function checkQty(product){
+                console.log(fixedQuantity + " " + $("#qty").val());
+                if($("#qty").val() > fixedQuantity){
+                    $("#successAlert").hide();
+                    $("#failAlert").show();
+                    return false;
+                } else {
+                    fixedQuantity -= $("#qty").val();
+                    return true;
+                }
+            }
             function setItems(product){
                 let cartItems = [];
                 cartItems = JSON.parse(localStorage.getItem('productsInCart'));
-
                 if(cartItems == null){
                     cartItems = [];
                 }
