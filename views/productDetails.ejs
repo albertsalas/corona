@@ -100,7 +100,7 @@
 
         function checkQty(product) {
             console.log(fixedQuantity + " " + $("#qty").val());
-            if ($("#qty").val() > fixedQuantity) {
+            if (parseInt($("#qty").val()) > parseInt(fixedQuantity)) {
                 $("#successAlert").hide();
                 $("#failAlert").show();
                 return false;
