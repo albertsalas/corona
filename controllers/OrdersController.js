@@ -19,3 +19,14 @@ exports.create = (req, res) => {
         }
     })
 }
+
+exports.findAllUserOrders = (req, res) => {
+    Order.findAllUserOrders(res.locals.username,(err, data) => {
+        if (err) {
+            res.status(500).send({message: err.message || "An error occurred when retrieving orders."});
+        } else {
+            console.log(data);
+            res.send(data);
+        }
+    });
+}
