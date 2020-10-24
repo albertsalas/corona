@@ -86,6 +86,7 @@
             console.log("click");
             if (checkQty(product)) {
                 $("#successAlert").show();
+                $("#failAlert").hide();
                 console.log(localStorage.getItem("productsInCart"));
                 setItems(product);
             }
