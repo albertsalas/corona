@@ -18,7 +18,7 @@
     <div class="card mb-3" style="max-width: 40rem; margin: 0 auto;">
       <div class="card-header bg-info">
         <div class="d-flex justify-content-between">
-          <div class=""><b>Subtotal: </b></div>
+          <div class=""><b>Subtotal: <span id="subtotal"></span></b></div>
         </div>
       </div>
       <div class="card-body">
@@ -74,9 +74,7 @@
         //count is used to assign the value of the button equal to the index of the localstorage array 
         //also used to change the values when something is deleted
         let count = 0;
-        // for(var i of items){
-        //   console.log(i.name);
-        // }
+        getTotalShoppingCartPrice();
         items.forEach(function(i){
           $('#items').append(`
             <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
@@ -96,14 +94,22 @@
             count++;
           });
       }
+      
+      function getTotalShoppingCartPrice(){
+        $("#subtotal").html("");
+        let totalPrice = 0;
+        items.forEach(function(i){
+          totalPrice+=i.price*i.quantity;
+        });
+        $("#subtotal").append(`<span>$${totalPrice}</span>`);
+      }
       $("#checkoutButton").on('click', function(){
         console.log('clicked checkout');
-        var totalPrice = 0;
+        
         
          if(username){
             items.forEach(function(i){
               updateItem(i.name, i.quantity);
-              // totalPrice+=i.price*i.quantity;
               addOrder(username, i.name, i.quantity, i.price);
             });
             localStorage.clear();
