@@ -19,10 +19,11 @@
             <table class="table table-dark table-fit">
                 <thead>
                 <tr>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
+                    <th scope="col" class="text-center">Product Name</th>
+                    <th scope="col" class="text-center">Description</th>
+                    <th scope="col" class="text-center">Price</th>
+                    <th scope="col" class="text-center">Quantity</th>
+                    <th scope="col" class="text-center">Image URL</th>
                     <th scope="col" class="text-center">
                         <button id="addNewProductButton" type="button" class="btn btn-success">
                             Add New Product
@@ -41,6 +42,8 @@
                             $<%= item.price %> </td>
                         <td id="quantity_<%= item.name %>" class="text-center"
                             data-quantity="<%= item.quantity %>"> <%= item.quantity %> </td>
+                        <td id="img_<%= item.name %>" class="text-center"
+                            data-img="<%= item.img %>"> <%= item.img %> </td>
                         <td class="text-center">
                             <button data-name="<%= item.name %>" type="button" class="btn btn-primary m-2 editButton">
                                 Edit
@@ -75,6 +78,8 @@
                                placeholder="Enter price">
                         <input type="number" step="1" class="form-control m-1" id="quantity" name="quantity"
                                placeholder="Enter quantity">
+                        <input type="text" step="1" class="form-control m-1" id="img" name="img"
+                               placeholder="Enter image URL">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -103,10 +108,12 @@
             let descriptionElement = document.getElementById("description_" + name);
             let priceElement = document.getElementById("price_" + name);
             let quantityElement = document.getElementById("quantity_" + name);
+            let imgElement = document.getElementById("img_" + name);
             document.getElementById("name").value = name;
             document.getElementById("description").value = getDataAttribute("description", descriptionElement);
             document.getElementById("price").value = getDataAttribute("price", priceElement);
             document.getElementById("quantity").value = getDataAttribute("quantity", quantityElement);
+            document.getElementById("img").value = getDataAttribute("img", imgElement)
             $("#productModal").modal();
         });
 
@@ -117,6 +124,7 @@
             document.getElementById("description").value = "";
             document.getElementById("price").value = "";
             document.getElementById("quantity").value = "";
+            document.getElementById("img").value = ""
         });
 
         $(document).on('click', '#saveButton', function () {
@@ -125,6 +133,7 @@
             productHash['description'] = document.getElementById("description").value;
             productHash['price'] = document.getElementById("price").value;
             productHash['quantity'] = document.getElementById("quantity").value;
+            productHash['img'] = document.getElementById("img").value;
 
             for (let key in productHash) {
                 if (productHash[key] === "" || !productHash[key]) {
@@ -154,7 +163,8 @@
                     name: productHash['name'],
                     description: productHash['description'],
                     price: productHash['price'],
-                    quantity: productHash['quantity']
+                    quantity: productHash['quantity'],
+                    img: productHash['img']
                 },
                 type: 'POST',
                 success: function () {
@@ -174,7 +184,8 @@
                     name: productHash['name'],
                     description: productHash['description'],
                     price: productHash['price'],
-                    quantity: productHash['quantity']
+                    quantity: productHash['quantity'],
+                    img: productHash['img']
                 },
                 type: 'PUT',
                 success: function () {

@@ -30,4 +30,20 @@ Order.create = (newOrder, result) => {
         });
 };
 
+/**
+ * Finds all of a user's orders (requires user to be logged in)
+ * @param name
+ * @param result
+ */
+Order.findAllUserOrders = (name, result) => {
+    connection.query("SELECT * FROM `Order` WHERE username = ?", name, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        result(null, res);
+    });
+}
+
 module.exports = Order;

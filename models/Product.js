@@ -10,6 +10,7 @@ const Product = function (product) {
     this.description = product.description;
     this.price = product.price;
     this.quantity = product.quantity;
+    this.img = product.img;
 };
 
 /**
@@ -66,8 +67,8 @@ Product.findAll = result => {
  * @param result - the query result
  */
 Product.update = (name, product, result) => {
-    connection.query("UPDATE Product SET name = ?, description = ?, price = ?, quantity = ? WHERE name = ?",
-        [product.name, product.description, product.price, product.quantity, name], (err) => {
+    connection.query("UPDATE Product SET name = ?, description = ?, price = ?, quantity = ?, img = ? WHERE name = ?",
+        [product.name, product.description, product.price, product.quantity, product.img, name], (err) => {
             if (err) {
                 result(null, err);
                 return;
