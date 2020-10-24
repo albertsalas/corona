@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 // setup DB environment variables
 const dotenv = require("dotenv");
+const session = require('express-session');
 dotenv.config();
 
 const indexRouter = require('./routes/index');
