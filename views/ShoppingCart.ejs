@@ -30,11 +30,11 @@
     <div id="checkout" style="text-align: center; margin-bottom: 1em;">
     </div>
    
-
+    
     <div id="partial"></div>
 
     <script>
-    
+      var username = `<%- username %>`;
       var items = [];
       items = JSON.parse(localStorage.getItem('productsInCart'));
 
@@ -74,6 +74,9 @@
         //count is used to assign the value of the button equal to the index of the localstorage array 
         //also used to change the values when something is deleted
         let count = 0;
+        // for(var i of items){
+        //   console.log(i.name);
+        // }
         items.forEach(function(i){
           $('#items').append(`
             <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
@@ -81,7 +84,7 @@
                 <div class="d-flex justify-content-between">
                   <div class="">Ordered: ${i.quantity} @ $${i.price}</div>
                   <div class="">Total Price: $${i.price * i.quantity}</div>
-                  <div class="">Ship to: username</div>
+                  <div class="">Ship to: ${username}</div>
                 </div>
               </div>
               <div class="card-body">
@@ -96,12 +99,17 @@
       $("#checkoutButton").on('click', function(){
         console.log('clicked checkout');
         var totalPrice = 0;
-        items.forEach(function(i){
-          updateItem(i.name, i.quantity);
-          // totalPrice+=i.price*i.quantity;
-        });
         
-           
+         if(username){
+            items.forEach(function(i){
+              updateItem(i.name, i.quantity);
+              // totalPrice+=i.price*i.quantity;
+              addOrder(username, i.name, i.quantity, i.price);
+            });
+            localStorage.clear();
+            window.location.reload();
+          }
+        
       });
       function updateItem(n, q){
         console.log(n);
@@ -118,6 +126,25 @@
                   success: function (data) {
                   },
               });           
+      }
+
+      function addOrder(name, product, orderQuantity, totalProductPrice){
+        let newOrder = 
+        {
+          username: name,
+          productName: product,
+          quantity: orderQuantity,
+          totalPrice: totalProductPrice
+        }
+        // console.log(newOrder);
+        $.ajax({
+              url: "/orders/",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(newOrder),
+              success: function () {
+              },
+        });
       }
     $('#partial').html('');
     $('#partial').append(`<%- include('./partials/footer.ejs') %>`);
