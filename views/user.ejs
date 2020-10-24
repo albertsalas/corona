@@ -1,110 +1,151 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
     <title>Corona</title>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-		<link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
-		<link rel='stylesheet' type='text/css' href='css/app.css'>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/> -->
+		<!-- <link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'> -->
+		<!-- <link rel='stylesheet' type='text/css' href='css/app.css'> -->
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"> </script> 
+    <%- include('./partials/scripts.ejs') %>
   </head>
 
   <body>
-
-    <div class='container'>
-        <div class='jumbotron'>
-            <h3> Your User Information </h3>
-            <a class='btn btn-primary' href='/'>Home</a>
-        </div>
-        <div class='row'>
-            <%if(typeof error != 'undefined' && error){%>
-            <h6 style='color: red;'> CANNOT FIND YOUR USER INFORMATION!!! </h6>
-            <%}%>
-            else<%{%>
-                <div class='form-group row'>
-                    <label for='username' class='col-sm-4 col-form-label'>Username</label>
-                    <div class='col-sm-4'>
-                        <%=user.username%>
-                    </div>
-                </div>
-                <div class='form-group row'>
-                    <label for='firstName' class='col-sm-4 col-form-label'>Firstname</label>
-                    <div class='col-sm-4'>
-                        <%=user.firstName%>
-                    </div>
-                </div>
-                <div class='form-group row'>
-                    <label for='lastName' class='col-sm-4 col-form-label'>Lastname</label>
-                    <div class='col-sm-4'>
-                        <%=user.lastName%>
-                    </div>
-                </div>
-                <div class='form-group row'>
-                    <div class='col-sm-4'></div>
-                    <div class='col-sm-2'>
-                        <button class='btn btn-primary btn-block' href='/user/<%=user.username%>/edit'>Edit</button>
-                    </div>
-                    <div class='col-sm-2'>
-                        <button class='btn btn-danger btn-block' href='/dashboard'>Back</button>
-                    </div>
-                    <div class='col-sm-4'></div>
-                </div>
-            <%}%>
+    <script src="/javascripts/search.js"></script>
+    
+    <div class="jumbotron">
+        <div class = "container">
+            <h5>Profile <%=user.username%></h5>
+            <div  class="text-right" >
+                <a class="btn btn-primary editButton" href="/">Back</a> <!-- Needs to conitnue the session ? -->
+            </div>
         </div>
     </div>
+    <div class = "container" id = "userInfo">
+        <table class = "table">
+            <tbody>
+                <tr>
+                    <td scope="row" data-uname="<%= user.username %>" id = "uname">
+                        Username: <%=user.username%>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row" data-fname="<%= user.firstName %>" id = "fname">
+                        Firstname: <%=user.firstName%>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row" data-lname="<%= user.lastName %>" id = "lname">
+                        Lastname: <%=user.lastName%>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row" data-pword="<%= user.password %>" id = "pword">
+                        Password: <%=user.password%>
+                    </td>
+                </tr>
+                <td class="text-center">
+                    <button data-uname="<%= user.username %>" type="button" class="btn btn-primary editButton">
+                        Edit
+                    </button>
+                </td>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <div class="flex-md-grow-1">
+                        <input type="text" class="form-control m-1" id="username" name="username" placeholder="Enter Username">
+                        <input type="text" class="form-control m-1" id="firstname" name="firstname" placeholder="Enter Firstname">
+                        <input type="text" class="form-control m-1" id="lastname" name="lastname" placeholder="Enter Lastname">
+                        <input type="text" class="form-control m-1" id="password" name="password" placeholder="Enter Password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveButton" type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        $(document).ready(function () {
+            var editing = false;
+            var username = "";
+
+            $(document).on('click', '.editButton', function () {
+                editing = true;
+                username = getDataAttribute("uname", this);
+                let usernameElement = document.getElementById("uname");
+                let firstNameElement = document.getElementById("fname");
+                let lastNameElement = document.getElementById("lname");
+                let passwordElement = document.getElementById("pword");
+                document.getElementById("username").value = username;
+                document.getElementById("firstname").value = getDataAttribute("fname", firstNameElement);
+                document.getElementById("lastname").value = getDataAttribute("lname", lastNameElement);
+                document.getElementById("password").value = getDataAttribute("pword", passwordElement);
+                $("#productModal").modal();
+            });
+
+            $(document).on('click', '#saveButton', function () {
+                let productHash = {};
+                productHash['username'] = document.getElementById("username").value;
+                productHash['firstname'] = document.getElementById("firstname").value;
+                productHash['lastname'] = document.getElementById("lastname").value;
+                productHash['password'] = document.getElementById("password").value;
+
+                for (let key in productHash) {
+                    if (productHash[key] === "" || !productHash[key]) {
+                        alert("ALL FIELDS MUST BE FILLED!");
+                        return;
+                    }
+                }
+                if (editing) {
+                    editProfile(username, productHash);
+                } 
+            });
+
+            function editProfile(user, productHash) {
+                $.ajax({
+                    url: "/users/" + user,
+                    data: {
+                        username: productHash['username'],
+                        firstName: productHash['firstname'],
+                        lastName: productHash['lastname'],
+                        password: productHash['password']
+                    },
+                    type: 'PUT',
+                    success: function () {
+                        window.location.href = './' + productHash['username']
+                    },
+                    error: function (request, error) {
+                        alert("Request: " + JSON.stringify(error));
+                    }
+                });
+            }
+
+            function getDataAttribute(type, element) {
+                return element.getAttribute("data-" + type);
+            }
+        });
+    </script>
+
   </body>
 </html>
-
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <title>Corona</title>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-		<link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
-		<link rel='stylesheet' type='text/css' href='css/app.css'>
-  </head>
-  <body>
-
-    <div class='container'>
-        <div class='jumbotron'>
-            <h3> Your User Information </h3>
-            <a class='btn btn-primary' href='/home'>Home</a>
-        </div>
-        <div class='row'>
-            <%if(!user){%>
-                <h1 class='col-sm-12 nofound'>CANNOT FIND YOUR USER INFORMATION!!!</h1>    
-            <%}
-            else{%>
-                <div class='form-group row'>
-                    <label for='username' class='col-sm-4 col-form-label'>Username</label>
-                    <div class='col-sm-4'>
-                        <%=user.username%>
-                    </div>
-                </div>
-                <div class='form-group row'>
-                    <label for='firstName' class='col-sm-4 col-form-label'>Firstname</label>
-                    <div class='col-sm-4'>
-                        <%=user.firstName%>
-                    </div>
-                </div>
-                <div class='form-group row'>
-                    <label for='lastName' class='col-sm-4 col-form-label'>Lastname</label>
-                    <div class='col-sm-4'>
-                        <%=user.lastName%>
-                    </div>
-                </div>
-                <div class='form-group row'>
-                    <div class='col-sm-4'></div>
-                    <div class='col-sm-2'>
-                        <button class='btn btn-primary btn-block' href='/user/<%=user.username%>/edit'>Edit</button>
-                    </div>
-                    <div class='col-sm-2'>
-                        <button class='btn btn-danger btn-block' href='/dashboard'>Back</button>
-                    </div>
-                    <div class='col-sm-4'></div>
-                </div>
-            <%}%>
-        </div>
-    </div>
-
-</body>
-</html> -->

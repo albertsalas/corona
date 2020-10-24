@@ -189,7 +189,7 @@
 
         function deleteProduct(productName) {
             $.ajax({
-                url: "/products/" + productName,
+                url: "./" + productName,
                 type: 'DELETE',
                 success: function () {
                     reloadTable();
