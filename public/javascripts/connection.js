@@ -19,5 +19,5 @@ if (process.env.JAWSDB_MARIA_DATABASE) {
     });
 }
 
-console.log("database created!");
+console.log("Successfully connected to database!");
 module.exports = connection;
