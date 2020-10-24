@@ -4,21 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details Page</title>
-<<<<<<< HEAD
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
     <%- include('./partials/scripts.ejs') %> 
     
   </head>
-=======
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
-    <%- include('./partials/scripts.ejs') %>
-
-</head>
->>>>>>> a8b2f64373cf326677924d5859b0282158bbb551
 <body class="bg-light">
 <!--Navigation bar (log in, sign up, log out, search)-->
 <%- include('./partials/nav.ejs') %>
@@ -116,29 +107,6 @@
                 fixedQuantity -= $("#qty").val();
                 return true;
             }
-<<<<<<< HEAD
-            function setItems(product){
-                let cartItems = [];
-                cartItems = JSON.parse(localStorage.getItem('productsInCart'));
-                console.log(cartItems);
-                if(cartItems == null){
-                    cartItems = [];
-                }
-                var a = 0;
-                // if cart has things in it
-                if(cartItems.length != 0){
-                    let i;
-                    var t = false;
-                    for(i = 0; i<cartItems.length;i++){
-                        if(cartItems[i].name == product.name){
-                            cartItems[i].quantity += product.quantity;
-                            t = true;
-                            break;
-                        }
-                    }
-                    if(t != true){
-                        cartItems.push(product);
-=======
         }
 
         function setItems(product) {
@@ -153,7 +121,6 @@
                         cartItems[i].quantity += product.quantity;
                         t = true;
                         break;
->>>>>>> a8b2f64373cf326677924d5859b0282158bbb551
                     }
                 }
                 if (t !== true) {
