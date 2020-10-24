@@ -26,7 +26,8 @@ exports.findAllUserOrders = (req, res) => {
             res.status(500).send({message: err.message || "An error occurred when retrieving orders."});
         } else {
             console.log(data);
-            res.send(data);
+            res.render('orders', {data: data, title: "Orders"})
+
         }
     });
 }

@@ -16,9 +16,20 @@
   <script src="/javascripts/search.js"></script>
     <div id="items"></div>
   
+    <% data.forEach(element => { %>
 
-    <div id="checkout" style="text-align: center; margin-bottom: 1em;">
-    </div>
+      <div class="card bg-light mb-3" style="max-width: 40rem; margin: 0 auto;">
+        <div class="card-header">
+          <div class="d-flex justify-content-between">
+            <div class="">Ordered: <%- element.productName %> </div>
+            <div class="">Total Price: $<%- element.totalPrice %></div>
+            <div class="">Ship to: <%- element.username %></div>
+          </div>
+        </div>
+      </div>
+     
+    <% }) %>
+    
    
     
     <div id="partial"></div>
